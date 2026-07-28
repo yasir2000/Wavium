@@ -40,6 +40,8 @@ This architecture is intended to improve:
 - scalability through portable component packaging
 - performance through bare-metal execution and deterministic runtime control
 - polyglot development through generated SDKs
+
+# The Big Picture
 ```mermaid
 flowchart TB
 
@@ -69,6 +71,7 @@ K --> L[Hardware]
 
 ```
 
+# Traditional vs Wavium
 ```mermaid
 flowchart LR
 
@@ -107,6 +110,7 @@ B4 --> B5[Hardware]
 end
 ```
 
+# Overall Runtime
 ```mermaid
 flowchart TB
 
@@ -136,7 +140,7 @@ end
 
 HAL --> Hardware
 ```
-
+# Runtime Internals
 ```mermaid
 graph TB
 
@@ -162,7 +166,7 @@ Runtime --> Metrics
 
 Runtime --> Logger
 ```
-
+# Boot Flow
 ```mermaid
 flowchart TB
 
@@ -188,7 +192,7 @@ Runtime --> Components
 
 Components --> Applications
 ```
-
+# Component Lifecycle
 ```mermaid
 stateDiagram-v2
 
@@ -212,7 +216,7 @@ Stopped --> Unloaded
 
 Unloaded --> [*]
 ```
-
+# Application Deployment
 ```mermaid
 flowchart LR
 
@@ -234,7 +238,7 @@ Deploy --> Runtime
 
 Runtime --> Execute
 ```
-
+# Actor System
 ```mermaid
 flowchart LR
 
@@ -254,7 +258,7 @@ Scheduler --> ActorC
 
 ActorC --> MailboxC
 ```
-
+# Actor Lifecycle
 ```mermaid
 stateDiagram-v2
 
@@ -276,7 +280,7 @@ Running --> Terminated
 
 Terminated --> [*]
 ```
-
+# Scheduler
 ```mermaid
 flowchart TB
 
@@ -296,7 +300,7 @@ Worker2 --> ReadyQueue
 
 Worker3 --> ReadyQueue
 ```
-
+# Memory Architecture
 ```mermaid
 flowchart TB
 
@@ -313,7 +317,7 @@ SlabAllocator --> PhysicalAllocator
 PhysicalAllocator --> BareMetalMemory
 ```
 
-
+# Memory Allocation
 ```mermaid
 sequenceDiagram
 
@@ -337,7 +341,7 @@ Allocator-->>Runtime: pointer
 
 Runtime-->>Component: handle
 ```
-
+# Capability Security
 ```mermaid
 flowchart TB
 
@@ -358,7 +362,7 @@ Allowed --> Resource
 Denied --> Reject
 ```
 
-
+# Hardware Layer
 ```mermaid
 flowchart TB
 
@@ -380,7 +384,7 @@ HAL --> Network
 
 HAL --> Sensors
 ```
-
+# Device Discovery
 ```mermaid
 flowchart TB
 
@@ -400,7 +404,7 @@ Driver --> Capability
 
 Capability --> Runtime
 ```
-
+# Driver Model
 ```mermaid
 flowchart LR
 
@@ -414,7 +418,7 @@ WIT --> Runtime
 
 Runtime --> Components
 ```
-
+# Polyglot Architecture
 ```mermaid
 flowchart TB
 
@@ -446,7 +450,7 @@ WASM --> WIT
 
 WIT --> Runtime
 ```
-
+# WIT Communication
 ```mermaid
 sequenceDiagram
 
@@ -470,7 +474,7 @@ Runtime-->>WIT: return
 
 WIT-->>ComponentA: result
 ```
-
+# Runtime Stack
 ```mermaid
 flowchart TB
 
@@ -492,7 +496,7 @@ Memory --> HAL
 
 HAL --> Hardware
 ```
-
+# Repository Overview
 ```mermaid
 graph TD
 
@@ -530,15 +534,6 @@ Wavium --> Benchmarks
 
 Wavium --> Tests
 ```
-
-
-
-
-
-
-
-
-
 ## Documentation
 
 Primary documentation lives under [docs](docs):
