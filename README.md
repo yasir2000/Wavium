@@ -1,3 +1,4 @@
+<img width="512" height="227" alt="image" src="https://github.com/user-attachments/assets/cb1f62d9-a6e8-419f-aba5-62ab624dd094" />
 # Wavium
 
 Wavium is the Universal WebAssembly Execution Fabric: a Zig-based, bare-metal computing platform for running portable WebAssembly Components directly on hardware.
