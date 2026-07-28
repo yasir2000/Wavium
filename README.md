@@ -185,6 +185,7 @@ Wavium components are language-neutral at the contract level: every SDK below is
 Every SDK implements the same canonical ABI codec (`i32`, `bool`, length-prefixed `string`) and the same `CapabilityHandle` concept as the runtime, and ships with a test suite that runs with only that language's own toolchain — no external test framework required.
 
 ### How SDKs Are Generated
+<img width="105" height="641" alt="image" src="https://github.com/user-attachments/assets/88c09efc-d7fb-4f32-8974-f4ca74d81c21" />
 
 Every SDK is derived from the same source of truth rather than hand-maintained per language:
 
@@ -208,12 +209,16 @@ flowchart TD
 3. Each target language gets generated bindings plus room for small handwritten adapters around capability handles.
 4. The [modules/wavium-sdk](modules/wavium-sdk) registry keeps package names and directory locations consistent across languages, so tooling and CI can enumerate SDKs programmatically instead of hardcoding paths.
 
+<img width="85" height="639" alt="image" src="https://github.com/user-attachments/assets/3a09c0a9-b17d-42e5-bb2b-344f716309cc" />
+
 ### Choosing an SDK
 
 - Use the **Zig SDK** when building components, drivers, or runtime-adjacent tooling that should compile alongside the core platform.
 - Use the **Rust** or **C** SDKs for systems-level client code that needs precise control over memory and capability handles.
 - Use **Go**, **Python**, **JavaScript**, **Java**, **C#**, or **PHP** for operational tooling, orchestration scripts, or application-layer clients that talk to Wavium components without needing bare-metal control.
 - All SDKs expose the same capability model: resource access always goes through explicit capability handles, never ambient APIs, regardless of language.
+  
+<img width="101" height="641" alt="image" src="https://github.com/user-attachments/assets/19ead847-3511-4087-9c58-e9d1e6e251b9" />
 
 ### SDK Status
 
