@@ -40,7 +40,34 @@ This architecture is intended to improve:
 - scalability through portable component packaging
 - performance through bare-metal execution and deterministic runtime control
 - polyglot development through generated SDKs
+```mermaid
+flowchart TB
 
+A[Developer]
+
+A --> B[Zig]
+A --> C[Rust]
+A --> D[Go]
+A --> E[C/C++]
+A --> F[Python]
+A --> G[JavaScript]
+
+B --> H[WebAssembly Components]
+C --> H
+D --> H
+E --> H
+F --> H
+G --> H
+
+H --> I[WIT Contracts]
+
+I --> J[Wavium Runtime]
+
+J --> K[Capability Runtime]
+
+K --> L[Hardware]
+
+```
 ## Documentation
 
 Primary documentation lives under [docs](docs):
