@@ -161,6 +161,51 @@ flowchart TD
 - [Create a Component](docs/developers/create-component.md) and [Write a WIT Interface](docs/developers/write-wit-interface.md) for the underlying rules.
 - [examples](examples): full working sources for every scenario above, ready to copy and adapt.
 
+## Language SDKs
+
+Wavium components are language-neutral at the contract level: every SDK below is generated from the same WIT and canonical ABI definitions, so application code written against one SDK maps onto the same runtime capability model as any other. The shared registry that keeps this mapping canonical lives in [modules/wavium-sdk/src/lib.zig](modules/wavium-sdk/src/lib.zig).
+
+| Language | Package | Directory | Entry Point | Version | Status |
+|---|---|---|---|---|---|
+| Zig | `wavium-zig-sdk` | [sdks/wavium-zig-sdk](sdks/wavium-zig-sdk) | [src/lib.zig](sdks/wavium-zig-sdk/src/lib.zig) | 0.1.0 | Scaffold |
+| Rust | `wavium-rust-sdk` | [sdks/wavium-rust-sdk](sdks/wavium-rust-sdk) | [src/lib.rs](sdks/wavium-rust-sdk/src/lib.rs) | 0.1.0 | Scaffold |
+| Go | `wavium-go-sdk` | [sdks/wavium-go-sdk](sdks/wavium-go-sdk) | [wavium.go](sdks/wavium-go-sdk/wavium.go) | 0.1.0 | Scaffold |
+| C | `wavium-c-sdk` | [sdks/wavium-c-sdk](sdks/wavium-c-sdk) | [include/wavium.h](sdks/wavium-c-sdk/include/wavium.h) | 0.1.0 | Scaffold |
+| Python | `wavium-python-sdk` | [sdks/wavium-python-sdk](sdks/wavium-python-sdk) | [src/wavium_sdk/\_\_init\_\_.py](sdks/wavium-python-sdk/src/wavium_sdk/__init__.py) | 0.1.0 | Scaffold |
+| JavaScript | `wavium-js-sdk` | [sdks/wavium-js-sdk](sdks/wavium-js-sdk) | [index.js](sdks/wavium-js-sdk/index.js) | 0.1.0 | Scaffold |
+
+### How SDKs Are Generated
+
+Every SDK is derived from the same source of truth rather than hand-maintained per language:
+
+```mermaid
+flowchart TD
+    Wit[WIT Contract] --> Abi[Canonical ABI Mapping]
+    Abi --> Bindgen[wavium-bindgen]
+    Bindgen --> Zig[Zig SDK]
+    Bindgen --> Rust[Rust SDK]
+    Bindgen --> Go[Go SDK]
+    Bindgen --> C[C SDK]
+    Bindgen --> Python[Python SDK]
+    Bindgen --> Js[JavaScript SDK]
+```
+
+1. A component's public surface is described once in WIT.
+2. `wavium-bindgen` maps WIT types to the canonical ABI (see [docs/architecture/wit-model.md](docs/architecture/wit-model.md)).
+3. Each target language gets generated bindings plus room for small handwritten adapters around capability handles.
+4. The [modules/wavium-sdk](modules/wavium-sdk) registry keeps package names and directory locations consistent across languages, so tooling and CI can enumerate SDKs programmatically instead of hardcoding paths.
+
+### Choosing an SDK
+
+- Use the **Zig SDK** when building components, drivers, or runtime-adjacent tooling that should compile alongside the core platform.
+- Use the **Rust** or **C** SDKs for systems-level client code that needs precise control over memory and capability handles.
+- Use **Go**, **Python**, or **JavaScript** for operational tooling, orchestration scripts, or application-layer clients that talk to Wavium components without needing bare-metal control.
+- All SDKs expose the same capability model: resource access always goes through explicit capability handles, never ambient APIs, regardless of language.
+
+### SDK Status
+
+Every SDK currently ships as a scaffold: package metadata, an entry-point module, and a short README describing its intended surface. As `wavium-bindgen` gains full multi-language code generation, each scaffold will be filled in with generated bindings while preserving its existing package name, directory, and public entry point. Track progress in [docs/toolchain/sdk-generation.md](docs/toolchain/sdk-generation.md) and [CHANGELOG.md](CHANGELOG.md).
+
 ## Quick Start
 
 1. Read the architecture docs in [docs](docs).
