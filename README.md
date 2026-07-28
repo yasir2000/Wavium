@@ -1,6 +1,7 @@
 <div align="center">
     <img width="250" height="110" alt="Wavium logo" src="https://github.com/user-attachments/assets/cb1f62d9-a6e8-419f-aba5-62ab624dd094" />
 </div>
+
 # Wavium
 
 [![Version](https://img.shields.io/badge/version-0.1.0-0f766e?style=for-the-badge&logo=semantic-release&logoColor=white)](build.zig.zon)
