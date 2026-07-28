@@ -11,7 +11,7 @@ Each example is intentionally narrow and maps to one subsystem or workflow:
 | [binary-rpc-replacement](binary-rpc-replacement) | Binary-first request/response exchange |
 | [edge-device-sensor](edge-device-sensor) | Capability-scoped device access |
 | [gpu-exec](gpu-exec) | Hardware capability-backed compute dispatch |
-| [ai-agent-component](ai-agent-component) | Runtime-managed workflow component |
+| [ai-agent-component](ai-agent-component) | Native no-network workflow orchestration demo |
 
 ## Documentation Standard
 

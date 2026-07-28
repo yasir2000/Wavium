@@ -1,5 +1,8 @@
 package wavium:agent;
 
 world ai-agent-component {
-    export step: func(input: string) -> string;
+    export plan: func(input: string) -> string;
+    export execute: func(input: string) -> string;
+    export verify: func(input: string) -> string;
+    export publish: func(input: string) -> string;
 }

@@ -1,0 +1,9 @@
+{
+  "name": "ai-agent-component-js",
+  "version": "0.1.0",
+  "description": "Wavium ai-agent component example in JavaScript",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}
