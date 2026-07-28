@@ -2,9 +2,17 @@
 
 Drivers in Wavium are expected to be small, capability-scoped components.
 
-The recommended flow is:
-- model the hardware capability
-- define the WIT interface
-- implement the driver component
-- validate the lifecycle in simulation
-- ship only after the trust and security model is satisfied
+## Recommended Flow
+
+1. model the hardware capability
+2. define the WIT interface
+3. implement the driver component
+4. validate the lifecycle in simulation
+5. ship only after the trust and security model is satisfied
+
+## Driver Boundaries
+
+- driver code should not assume a host OS
+- device ownership should be explicit
+- interrupts and DMA should be mediated by policy
+- test coverage should include failure and recovery cases

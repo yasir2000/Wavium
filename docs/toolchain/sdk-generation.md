@@ -2,12 +2,20 @@
 
 SDK generation turns WIT contracts and canonical ABI rules into language-native bindings.
 
-Supported targets include:
+## Supported Targets
+
 - Zig
 - Rust
 - Go
 - C
 - Python
 - JavaScript
+
+## SDK Goals
+
+- keep the contract surface identical across languages
+- expose capability handles explicitly
+- preserve binary-friendly types
+- keep generated code small and readable
 
 Generated SDKs should expose the same capability model while leaving room for small handwritten adapters around the generated surface.

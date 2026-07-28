@@ -1,6 +1,6 @@
 # Wavium Monorepo Architecture Output (Principal-Architect Baseline)
 
-This document is the expected architectural output from the first Copilot architecture prompt.
+This document is the expected architectural output for the Wavium monorepo.
 
 ## 1. Repository Tree
 
@@ -16,9 +16,6 @@ wavium/
       architecture.md
       monorepo-architecture-output.md
       implementation-roadmap.md
-      prompts/
-        01-copilot-architecture-init.md
-        02-was-specification.md
 
   specs/
     was/
@@ -338,3 +335,30 @@ Design rule:
 8. wavium-wasi host capability surface.
 9. wavium-cli and wavium-sdk first usable workflows.
 10. wavium-federation and advanced backends (JIT/AOT).
+
+## 11. Architectural Intent
+
+This repository tree is intended to make the platform understandable from the top down:
+- docs define the contract
+- specs define the invariants
+- modules implement the runtime and tooling
+- examples teach the programming model
+- tests validate the expected behavior
+
+## 12. Documentation Expectations
+
+Every major subsystem should have:
+- an architecture page
+- a specification page
+- at least one tutorial or example
+- relevant ADR coverage when the design is opinionated
+
+## 13. Diagram Summary
+
+```mermaid
+flowchart TD
+  Docs[Docs and Specs] --> Modules[Modules]
+  Modules --> Tests[Tests]
+  Modules --> Examples[Examples]
+  Tests --> CI[CI]
+```

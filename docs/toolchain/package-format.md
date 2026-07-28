@@ -2,11 +2,16 @@
 
 Wavium packages are designed to carry component bytes, metadata, capabilities, and trust material together.
 
-A package should include:
+## Package Contents
+
 - a versioned header
 - metadata and dependencies
 - component payloads
 - capability declarations
 - signatures or trust references
+
+## Lifecycle
+
+source -> compile -> package -> sign -> verify -> deploy
 
 Package structure must remain stable enough to support long-term tooling and reproducible deployment.

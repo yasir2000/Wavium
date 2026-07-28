@@ -116,7 +116,6 @@ Implemented and test-validated foundations:
 - bindgen stubs and canonical ABI helper scaffolds
 - component tool lifecycle contracts
 - deploy/update/rollback/migrate trust-gated package admission
-- hardware-first, boot-framework, and logo-generation prompt packs
 - repository scripts and GitHub Actions workflow set
 - SDK scaffolds for Zig, Rust, Go, C, Python, and JavaScript
 

@@ -4,7 +4,9 @@ Status: Accepted
 
 WASM Components are the primary execution boundary because they provide portability, isolation, and a stable interface model across language ecosystems.
 
-Consequences:
+## Consequences
+
 - language-neutral applications
 - explicit component contracts
 - portable execution across supported hardware targets
+- a cleaner path to SDK generation and verification

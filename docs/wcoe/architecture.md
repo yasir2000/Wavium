@@ -109,3 +109,24 @@ Layer 6: Tooling and SDK
 - M2: Actor mailbox + scheduler + capability checks in execution path.
 - M3: WIT-driven component linking + state snapshots.
 - M4: CLI packaging and benchmark suite with comparative baselines.
+
+## 11. Documentation Contracts
+
+The architecture blueprint is the source of truth for:
+- the layer model
+- subsystem ownership
+- technical naming
+- architecture guardrails
+
+Changes to runtime, hardware, or tooling should be reflected in the architecture docs before the implementation diverges.
+
+## 12. Diagram Summary
+
+```mermaid
+flowchart TD
+	Application --> Component[WASM Component]
+	Component --> WIT[WIT Contract]
+	WIT --> Runtime[Wavium Runtime]
+	Runtime --> HAL[Hardware Capability Layer]
+	HAL --> Hardware[Physical Hardware]
+```

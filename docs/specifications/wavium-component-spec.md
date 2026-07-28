@@ -2,8 +2,13 @@
 
 This specification covers component packaging, loading, linking, and execution expectations.
 
-A component must:
+## A Component Must
+
 - declare its WIT interfaces
 - remain portable across supported targets
 - execute under runtime-managed capabilities
 - avoid implicit OS dependencies
+
+## Stability Rule
+
+If a component change affects the public interface, update WIT, SDK generation, and the relevant tutorial or reference page together.

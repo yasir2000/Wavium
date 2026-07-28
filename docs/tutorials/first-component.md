@@ -1,5 +1,45 @@
 # First Component
 
-Walk through creating a component, defining its WIT surface, packaging it, and running it in the runtime or simulator.
+This tutorial walks through creating a real component, defining its WIT surface, packaging it, and running it in the runtime or simulator.
+
+## Prerequisites
+
+- familiarity with the component model
+- a Zig source file or equivalent language binding
+- a WIT world definition
+
+## Tutorial Flow
+
+1. write the component logic
+2. define the WIT world
+3. package the component
+4. run it in the simulator
+5. verify the expected output
+
+## Step-by-Step Walkthrough
+
+### 1. Write the component logic
+
+Begin with one function that accepts a simple input and returns a predictable output. Keep the logic side-effect free so the component remains easy to test.
+
+### 2. Define the WIT world
+
+Describe the function signature in WIT so the runtime can validate the interface before the component is executed. This is the contract that the host and guest both rely on.
+
+### 3. Package the component
+
+Assemble the component and contract metadata into a package that the build and runtime tools can inspect. Packaging should preserve the interface contract and any declared capabilities.
+
+### 4. Run it in the simulator
+
+Execute the package in the local simulator or runtime harness. The point of this step is to prove that the component works without depending on a desktop process model.
+
+### 5. Verify the expected output
+
+Confirm that the observed result matches the WIT contract and the component logic. If the output differs, fix the contract or implementation before moving on.
+
+## Outcome
+
+After this tutorial, you should have a working mental model for the full Wavium component lifecycle from source to execution.
 
 This tutorial should be paired with the component and WIT developer guides.

@@ -3,6 +3,18 @@
 ## Mission
 Build a full freestanding toolchain platform around Wavium so developers can compile, validate, package, sign, deploy, debug, and profile WASM Components for bare-metal runtime targets.
 
+## Scope
+
+The toolchain is responsible for all workflows that sit between source code and execution on hardware:
+- source compilation
+- contract validation
+- package assembly
+- trust verification
+- runtime deployment
+- local development simulation
+- SDK generation
+- debug and profile workflows
+
 ## Platform Principles
 - Freestanding-first: no libc/POSIX/OS assumptions in runtime-critical paths.
 - Component-native: WASM Component + WIT are authoritative contracts.
@@ -25,6 +37,14 @@ Build a full freestanding toolchain platform around Wavium so developers can com
 - wavium-devkit: local developer wrappers, templates, and simulator bridge.
 - wavium-sim: hardware/runtime simulator for local testing and CI.
 - wavium-ci: build validation, security scans, ABI checks, benchmark gates.
+
+## Toolchain Layers
+
+1. Source and contract tools
+2. Build, package, and trust tools
+3. Runtime deployment and simulator tools
+4. Debugging, profiling, and validation tools
+5. SDK generation and developer workflow tools
 
 ## Repository Shape
 - modules/wavium-toolchain
@@ -55,6 +75,18 @@ Build a full freestanding toolchain platform around Wavium so developers can com
 - manifest: metadata, dependencies, capabilities, target constraints
 - signatures: detached or embedded signature set
 - config: startup/runtime config overrides
+
+## Workflow Summary
+
+```mermaid
+flowchart TD
+	Source[Source Code] --> WIT[WIT Validation]
+	WIT --> Build[Build]
+	Build --> Package[.wvm Package]
+	Package --> Sign[Sign and Verify]
+	Sign --> Sim[Simulate]
+	Sim --> Deploy[Deploy]
+```
 
 ## Security and Trust Architecture
 - Build-time signing via wavium-security-tools sign.
@@ -93,3 +125,7 @@ Build a full freestanding toolchain platform around Wavium so developers can com
 - M2: .wvm artifacts generated and verified with trust checks.
 - M3: CLI flow build->package->verify->run works locally.
 - M4: Cross-target deploy/update/rollback baseline.
+
+## Documentation Requirement
+
+The toolchain architecture must stay synchronized with the command reference, package format docs, SDK generation docs, and any workflow diagrams in the docs/images directory.

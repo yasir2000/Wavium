@@ -3,6 +3,13 @@
 ## Objective
 Convert architecture intent into verifiable runtime increments while preserving strict WASM-native boundaries.
 
+## Planning Principles
+
+- plan around contracts before code
+- keep each phase testable on its own
+- prefer small vertical slices over broad partial implementations
+- keep docs, tests, and code in sync
+
 ## Phase A: Contract Lock (Week 1)
 - Produce WAS v0.1 in specs/was/v0.1/.
 - Define API contracts and module ownership matrix.
@@ -11,6 +18,11 @@ Convert architecture intent into verifiable runtime increments while preserving 
 Exit criteria:
 - All core contracts ratified.
 - No module code merged without contract references.
+
+Key deliverables:
+- WAS v0.1 layer and interface docs
+- architecture blueprint stabilization
+- repo structure agreement
 
 ## Phase B: Foundation Runtime (Weeks 2-4)
 - Implement wavium-core RuntimeContext and lifecycle skeleton.
@@ -22,6 +34,12 @@ Exit criteria:
 - Runtime boots and shuts down deterministically.
 - Basic task execution loop with deterministic allocation behavior.
 
+Key deliverables:
+- runtime context
+- allocator primitives
+- scheduler smoke tests
+- capability authorization path
+
 ## Phase C: WASM and Component Path (Weeks 5-7)
 - Implement wavium-wasm interpreter-first execution pipeline.
 - Implement wavium-wit parser MVP and canonical ABI subset.
@@ -30,6 +48,12 @@ Exit criteria:
 Exit criteria:
 - Minimal component can be loaded, linked, instantiated, executed.
 - ABI conformance tests pass for initial type subset.
+
+Key deliverables:
+- component loader
+- WIT parser subset
+- canonical ABI codec coverage
+- initial SDK generation path
 
 ## Phase D: Actor and State Runtime (Weeks 8-10)
 - Implement wavium-actor mailbox, supervision, lifecycle transitions.
@@ -40,6 +64,12 @@ Exit criteria:
 - Actor messaging works with bounded latency under stress.
 - Crash/restart replay of actor state validated.
 
+Key deliverables:
+- mailbox implementation
+- supervision semantics
+- append-only log
+- snapshot replay tests
+
 ## Phase E: WASI Surface and Tooling (Weeks 11-12)
 - Implement wavium-wasi clocks/random/environment/storage APIs.
 - Implement wavium-cli core commands (create/build/run/inspect).
@@ -47,6 +77,12 @@ Exit criteria:
 
 Exit criteria:
 - End-to-end dev loop from WIT to runnable component.
+
+Key deliverables:
+- CLI command surface
+- packaging and trust flow
+- developer documentation
+- runtime simulation workflow
 
 ## Phase F: Scale and Federation (Weeks 13+)
 - Add wavium-federation discovery and migration protocol baseline.
@@ -56,6 +92,12 @@ Exit criteria:
 Exit criteria:
 - Multi-node actor migration demonstration.
 - Reproducible benchmark harness and baseline reports.
+
+Key deliverables:
+- federation protocol baseline
+- benchmark harness
+- deployment orchestration
+- cross-target capability planning
 
 ## Governance Rules
 - Architecture first: all non-trivial modules require contract references.
