@@ -164,6 +164,8 @@ flowchart TD
 - [Create a Component](docs/developers/create-component.md) and [Write a WIT Interface](docs/developers/write-wit-interface.md) for the underlying rules.
 - [examples](examples): full working sources for every scenario above, ready to copy and adapt.
 
+<img width="680" height="642" alt="image" src="https://github.com/user-attachments/assets/0345b42c-77d2-4a2a-9692-983d33f54d06" />
+
 ## Language SDKs
 
 Wavium components are language-neutral at the contract level: every SDK below is generated from the same WIT and canonical ABI definitions, so application code written against one SDK maps onto the same runtime capability model as any other. The shared registry that keeps this mapping canonical lives in [modules/wavium-sdk/src/lib.zig](modules/wavium-sdk/src/lib.zig).
