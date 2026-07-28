@@ -12,6 +12,7 @@ Wavium is a Zig-based, bare-metal WebAssembly execution platform for running por
 It is designed as infrastructure rather than an application framework. The stable boundary is the WebAssembly Component Model, the contract surface is WIT, and the execution substrate is a capability-secured runtime that can boot on bare metal, simulate in CI, and scale across hardware classes.
 
 ## System Model
+<img width="800" height="691" alt="image" src="https://github.com/user-attachments/assets/7b04521d-dd32-4114-9a12-75bac87afb5e" />
 
 ```mermaid
 flowchart TD
