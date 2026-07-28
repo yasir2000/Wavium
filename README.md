@@ -1,48 +1,10 @@
 # Wavium
-<img width="250" height="110" alt="image" src="https://github.com/user-attachments/assets/cb1f62d9-a6e8-419f-aba5-62ab624dd094" />
 
-Wavium is the Universal WebAssembly Execution Fabric: a Zig-based, bare-metal computing platform for running portable WebAssembly Components directly on hardware.
+[![Version](https://img.shields.io/badge/version-0.1.0-0f766e?style=for-the-badge&logo=semantic-release&logoColor=white)](build.zig.zon)
+[![License](https://img.shields.io/badge/license-Apache_2.0-2563eb?style=for-the-badge&logo=apache&logoColor=white)](LICENSE)
+[![Docs](https://img.shields.io/badge/docs-available-111827?style=for-the-badge&logo=readthedocs&logoColor=white)](docs/README.md)
+[![CI](https://img.shields.io/badge/ci-passing-16a34a?style=for-the-badge&logo=githubactions&logoColor=white)](.github/workflows/ci.yml)
 
-It is designed as infrastructure, not as an application framework. The stable boundary is the component model, the contract surface is WIT, and the execution substrate is a capability-secured runtime that can boot on bare metal, simulate in CI, and scale across hardware classes.
-
-## Architecture
-
-```mermaid
-flowchart TD
-    App[Application] --> Comp[WASM Component]
-    Comp --> Wit[WIT Interface Contract]
-    Wit --> Run[Wavium Runtime]
-    Run --> Hal[Hardware Capability Layer]
-    Hal --> Hw[Physical Hardware]
-```
-
-Traditional model:
-
-Application -> Libraries -> Operating System -> Kernel -> Hardware
-
-Wavium model:
-
-Application -> WASM Component -> WIT Contract -> Wavium Runtime -> Hardware
-
-This model improves:
-- portability across languages and targets
-- security through explicit capability boundaries
-- scalability through portable component packaging
-- performance through bare-metal execution and deterministic runtime control
-- polyglot development through generated SDKs
-
-## Documentation Portal
-
-Primary documentation lives under [docs](docs):
-- [Vision](docs/vision/project-vision.md)
-- [Architecture](docs/architecture/overview.md)
-- [Runtime](docs/runtime/wavium-core.md)
-- [Hardware](docs/hardware/bootloader.md)
-- [Toolchain](docs/toolchain/cli.md)
-- [Developers](docs/developers/getting-started.md)
-- [Specifications](docs/specifications/wavium-runtime-spec.md)
-- [Tutorials](docs/tutorials/hello-world.md)
-# Wavium
 <img width="250" height="110" alt="Wavium logo" src="https://github.com/user-attachments/assets/cb1f62d9-a6e8-419f-aba5-62ab624dd094" />
 
 Wavium is a Zig-based, bare-metal WebAssembly execution platform for running portable WebAssembly Components directly on hardware.
@@ -96,6 +58,26 @@ Supporting project docs:
 - [SECURITY.md](SECURITY.md)
 - [ROADMAP.md](ROADMAP.md)
 - [CHANGELOG.md](CHANGELOG.md)
+
+## Release & Versioning
+
+Wavium uses semantic versioning for the repository and published artifacts.
+
+- Current root version: 0.1.0
+- The root package version is defined in [build.zig.zon](build.zig.zon)
+- SDK scaffolds track the same baseline version across language targets
+- Release notes are recorded in [CHANGELOG.md](CHANGELOG.md)
+- Release policy and channel definitions are tracked in [release-config.yml](release-config.yml)
+- The release workflow scaffold lives in [`.github/workflows/release.yml`](.github/workflows/release.yml)
+
+Release tracks:
+- stable: tagged releases intended for general consumption
+- nightly: pre-release or in-progress builds used for validation and internal testing
+
+Versioning rules:
+- patch releases fix bugs or documentation issues without contract changes
+- minor releases add backward-compatible features
+- major releases may change contracts, packaging, or runtime assumptions
 
 ## Repository Workflow
 
