@@ -1,0 +1,6 @@
+flowchart TD
+    Init[Runtime Init] --> Schedule[Scheduler]
+    Schedule --> Execute[Component Execute]
+    Execute --> State[State Update]
+    Execute --> Cap[Capability Check]
+    Cap --> Device[Hardware Access]

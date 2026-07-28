@@ -1,0 +1,13 @@
+name: security
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Placeholder security gate
+        run: echo "Security validation workflow placeholder for signing and policy checks."

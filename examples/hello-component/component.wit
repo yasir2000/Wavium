@@ -1,0 +1,5 @@
+package wavium:hello;
+
+world hello-component {
+    export greet: func() -> string;
+}

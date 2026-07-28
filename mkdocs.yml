@@ -1,0 +1,64 @@
+site_name: Wavium
+site_description: Wavium documentation portal
+nav:
+  - Home: docs/README.md
+  - Vision:
+      - Project Vision: docs/vision/project-vision.md
+      - Design Philosophy: docs/vision/design-philosophy.md
+      - Why Wavium: docs/vision/why-wavium.md
+      - Future Computing Model: docs/vision/future-computing-model.md
+  - Architecture:
+      - Overview: docs/architecture/overview.md
+      - Runtime Architecture: docs/architecture/runtime-architecture.md
+      - Component Model: docs/architecture/component-model.md
+      - WIT Model: docs/architecture/wit-model.md
+      - Hardware Architecture: docs/architecture/hardware-architecture.md
+      - Security Model: docs/architecture/security-model.md
+      - Execution Model: docs/architecture/execution-model.md
+  - Runtime:
+      - Wavium Core: docs/runtime/wavium-core.md
+      - WASM Engine: docs/runtime/wasm-engine.md
+      - Scheduler: docs/runtime/scheduler.md
+      - Memory Management: docs/runtime/memory-management.md
+      - Actor System: docs/runtime/actor-system.md
+      - State Engine: docs/runtime/state-engine.md
+  - Hardware:
+      - Bootloader: docs/hardware/bootloader.md
+      - Hardware Abstraction: docs/hardware/hardware-abstraction.md
+      - Device Model: docs/hardware/device-model.md
+      - Driver Framework: docs/hardware/driver-framework.md
+      - Supported Platforms: docs/hardware/supported-platforms.md
+  - Toolchain:
+      - CLI: docs/toolchain/cli.md
+      - Build System: docs/toolchain/build-system.md
+      - Package Format: docs/toolchain/package-format.md
+      - SDK Generation: docs/toolchain/sdk-generation.md
+      - Debugging: docs/toolchain/debugging.md
+  - Developers:
+      - Getting Started: docs/developers/getting-started.md
+      - Create Component: docs/developers/create-component.md
+      - Write WIT Interface: docs/developers/write-wit-interface.md
+      - Create Driver: docs/developers/create-driver.md
+      - Contributing: docs/developers/contributing.md
+  - Specifications:
+      - Runtime Spec: docs/specifications/wavium-runtime-spec.md
+      - Component Spec: docs/specifications/wavium-component-spec.md
+      - Security Spec: docs/specifications/wavium-security-spec.md
+      - Hardware Spec: docs/specifications/wavium-hardware-spec.md
+  - Tutorials:
+      - Hello World: docs/tutorials/hello-world.md
+      - First Component: docs/tutorials/first-component.md
+      - Actor Example: docs/tutorials/actor-example.md
+      - Hardware Example: docs/tutorials/hardware-example.md
+  - Reference:
+      - Command Reference: docs/reference/command-reference.md
+      - Configuration Reference: docs/reference/configuration-reference.md
+      - API Reference: docs/reference/api-reference.md
+  - ADRs:
+      - 001 Why Zig: docs/adr/001-why-zig.md
+      - 002 Why WASM Components: docs/adr/002-why-wasm-components.md
+      - 003 Capability Security: docs/adr/003-capability-security.md
+      - 004 No OS Design: docs/adr/004-no-os-design.md
+      - 005 Actor Model Choice: docs/adr/005-actor-model-choice.md
+  - Images:
+      - Diagram Sources: docs/images/README.md

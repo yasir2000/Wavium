@@ -1,0 +1,5 @@
+package wavium:sensor;
+
+world edge-device-sensor {
+    export read_sensor: func(id: u32) -> string;
+}

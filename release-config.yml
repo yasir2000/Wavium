@@ -1,0 +1,6 @@
+# Release configuration for Wavium
+# Extend with package signing, versioning, and publication policy.
+
+channels:
+  - stable
+  - nightly

@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant Dev as Developer
+    participant Build as Build System
+    participant Run as Runtime
+    participant Comp as Component
+    Dev->>Build: compile and package
+    Build->>Run: load package
+    Run->>Comp: instantiate
+    Comp->>Run: execute
+    Run->>Comp: destroy

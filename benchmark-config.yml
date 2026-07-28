@@ -1,0 +1,6 @@
+# Benchmark configuration for Wavium
+# Extend with runtime, boot, and hardware benchmark scenarios.
+
+runs:
+  - name: baseline
+    description: Placeholder benchmark scenario

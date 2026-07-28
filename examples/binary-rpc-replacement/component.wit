@@ -1,0 +1,5 @@
+package wavium:rpc;
+
+world binary-rpc-replacement {
+    export echo: func(payload: list<u8>) -> list<u8>;
+}

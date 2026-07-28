@@ -1,0 +1,5 @@
+package wavium:actors;
+
+world actor-supervision {
+    export supervise: func(event: string) -> string;
+}

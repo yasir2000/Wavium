@@ -1,0 +1,5 @@
+package wavium:gpu;
+
+world gpu-exec {
+    export dispatch: func(command: list<u8>) -> u32;
+}

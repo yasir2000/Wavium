@@ -1,0 +1,5 @@
+package wavium:agent;
+
+world ai-agent-component {
+    export step: func(input: string) -> string;
+}

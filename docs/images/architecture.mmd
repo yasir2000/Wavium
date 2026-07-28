@@ -1,0 +1,6 @@
+flowchart TD
+    Application --> Component[WASM Component]
+    Component --> WIT[WIT Contract]
+    WIT --> Runtime[Wavium Runtime]
+    Runtime --> HAL[Hardware Capability Layer]
+    HAL --> Hardware[Physical Hardware]

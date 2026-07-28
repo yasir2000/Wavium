@@ -1,0 +1,6 @@
+flowchart LR
+    Package[Signed Package] --> Runtime[Runtime Validation]
+    Runtime --> Capability[Capability Token]
+    Capability --> Component[Sandboxed Component]
+    Component --> Hardware[Hardware Access]
+    Hardware --> Audit[Security Audit Log]

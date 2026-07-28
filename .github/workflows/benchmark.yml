@@ -1,0 +1,12 @@
+name: benchmark
+
+on:
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Placeholder benchmark gate
+        run: echo "Benchmark configuration and runner wiring belong here."

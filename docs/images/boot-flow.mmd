@@ -1,0 +1,7 @@
+flowchart TD
+    Reset[Hardware Reset] --> Boot[Bootloader]
+    Boot --> Cpu[CPU Init]
+    Cpu --> Mem[Memory Init]
+    Mem --> Disc[Device Discovery]
+    Disc --> Load[Runtime Load]
+    Load --> Run[Component Execution]

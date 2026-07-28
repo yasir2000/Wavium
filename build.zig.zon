@@ -1,0 +1,18 @@
+.{
+    .fingerprint = 0x6bae5d9ec3583d42,
+    .name = .wavium,
+    .version = "0.1.0",
+    .minimum_zig_version = "0.14.0",
+    .dependencies = .{},
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "README.md",
+        "docs",
+        "specs",
+        "modules",
+        "examples",
+        "tests",
+        "benchmarks",
+    },
+}
