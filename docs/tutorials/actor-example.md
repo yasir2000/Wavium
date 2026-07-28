@@ -28,6 +28,35 @@ flowchart TD
 4. inject a few messages and observe transitions
 5. verify the actor remains isolated from sibling actors
 
+## Component Source
+
+```zig
+const std = @import("std");
+
+pub fn supervise(event: []const u8) []const u8 {
+    if (std.mem.eql(u8, event, "restart")) {
+        return "actor restarted";
+    }
+    return "actor observed event";
+}
+
+test "supervision handles restart" {
+    try std.testing.expectEqualStrings("actor restarted", supervise("restart"));
+}
+```
+
+## WIT World
+
+```wit
+package wavium:actors;
+
+world actor-supervision {
+    export supervise: func(event: string) -> string;
+}
+```
+
+The full working source lives in [examples/actor-supervision](../../examples/actor-supervision).
+
 ## Expected Behavior
 
 - messages arrive in a bounded queue
@@ -38,3 +67,9 @@ flowchart TD
 ## Learning Outcome
 
 Readers should understand how an actor receives work, transitions state, and remains isolated from sibling actors.
+
+## Related Documentation
+
+- [Actor System](../runtime/actor-system.md)
+- [ADR 005: Actor Model Choice](../adr/005-actor-model-choice.md)
+- [State Engine](../runtime/state-engine.md)

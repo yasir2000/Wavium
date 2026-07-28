@@ -28,3 +28,9 @@ flowchart TD
 - RISC-V machines and QEMU virt
 
 See [supported platforms](supported-platforms.md) for target coverage.
+
+## Related Documentation
+
+- [Hardware Architecture](../architecture/hardware-architecture.md)
+- [Hardware Abstraction](hardware-abstraction.md)
+- [Wavium Hardware Spec](../specifications/wavium-hardware-spec.md)

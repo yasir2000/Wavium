@@ -9,3 +9,9 @@ Key properties:
 - predictable lifecycle transitions
 - supervision for fault containment
 - compatibility with component and state systems
+
+## Related Documentation
+
+- [ADR 005: Actor Model Choice](../adr/005-actor-model-choice.md)
+- [Scheduler](scheduler.md)
+- [State Engine](state-engine.md)

@@ -24,3 +24,9 @@ sequenceDiagram
     Hal->>Hw: Access device
     Run->>Comp: Execute
 ```
+
+## Related Documentation
+
+- [Runtime Architecture](runtime-architecture.md)
+- [Component Model](component-model.md)
+- [Wavium Component Spec](../specifications/wavium-component-spec.md)

@@ -15,3 +15,9 @@ Future expansion:
 - embedded MCUs
 - vendor-specific accelerator platforms
 - additional board support packages as the HAL matures
+
+## Related Documentation
+
+- [Bootloader](bootloader.md)
+- [Hardware Architecture](../architecture/hardware-architecture.md)
+- [Wavium Hardware Spec](../specifications/wavium-hardware-spec.md)

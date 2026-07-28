@@ -10,3 +10,8 @@ WASM Components are the primary execution boundary because they provide portabil
 - explicit component contracts
 - portable execution across supported hardware targets
 - a cleaner path to SDK generation and verification
+
+## Related Documentation
+
+- [Component Model](../architecture/component-model.md)
+- [Wavium Component Spec](../specifications/wavium-component-spec.md)

@@ -28,3 +28,10 @@ Wavium aims to be a universal execution fabric that can run the same component-o
 - a component can be compiled once and validated on multiple targets
 - hardware access is capability-scoped and auditable
 - boot, runtime, and SDK docs tell a consistent technical story
+
+## Related Documentation
+
+- [Design Philosophy](design-philosophy.md)
+- [Why Wavium](why-wavium.md)
+- [Future Computing Model](future-computing-model.md)
+- [Architecture Overview](../architecture/overview.md)

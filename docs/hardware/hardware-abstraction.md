@@ -18,3 +18,9 @@ The hardware abstraction layer exposes devices through typed capabilities rather
 - preserve deterministic access paths for boot and runtime
 
 The HAL is the policy boundary between physical devices and component-level execution.
+
+## Related Documentation
+
+- [Bootloader](bootloader.md)
+- [Device Model](device-model.md)
+- [Driver Framework](driver-framework.md)

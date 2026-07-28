@@ -16,3 +16,9 @@ Drivers in Wavium are expected to be small, capability-scoped components.
 - device ownership should be explicit
 - interrupts and DMA should be mediated by policy
 - test coverage should include failure and recovery cases
+
+## Related Documentation
+
+- [Driver Framework](../hardware/driver-framework.md)
+- [Device Model](../hardware/device-model.md)
+- [Hardware Example Tutorial](../tutorials/hardware-example.md)

@@ -10,3 +10,8 @@ Wavium uses Zig for the core platform because it supports freestanding builds, e
 - simpler freestanding compilation
 - a single implementation language for the core platform
 - predictable cross-compilation for hardware-oriented targets
+
+## Related Documentation
+
+- [ADR 004: No OS Design](004-no-os-design.md)
+- [Architecture Overview](../architecture/overview.md)

@@ -25,3 +25,9 @@ flowchart TD
 This model supports multi-language development while preserving a single portable execution substrate.
 
 It also keeps platform evolution possible: new target classes can be added by extending the HAL, boot, and discovery layers without rewriting the application model.
+
+## Related Documentation
+
+- [Why Wavium](why-wavium.md)
+- [Architecture Overview](../architecture/overview.md)
+- [Hardware Architecture](../architecture/hardware-architecture.md)

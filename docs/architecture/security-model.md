@@ -10,3 +10,9 @@ The model includes:
 - hardware access through capability handles only
 
 Threat modeling is part of the architecture, not a postscript. The default posture is deny-by-default with explicit grant paths.
+
+## Related Documentation
+
+- [ADR 003: Capability Security](../adr/003-capability-security.md)
+- [Wavium Security Spec](../specifications/wavium-security-spec.md)
+- [Architecture Overview](overview.md)

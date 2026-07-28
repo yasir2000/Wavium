@@ -9,3 +9,9 @@ Responsibilities:
 - coordinate shutdown and teardown
 
 This layer is the root of the platform runtime, but it is not a generic operating system. Its job is to bring up the Wavium execution environment safely and deterministically.
+
+## Related Documentation
+
+- [Runtime Architecture](../architecture/runtime-architecture.md)
+- [Wavium Runtime Spec](../specifications/wavium-runtime-spec.md)
+- [Scheduler](scheduler.md)

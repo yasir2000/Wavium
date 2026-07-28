@@ -16,3 +16,9 @@ This specification defines the runtime lifecycle, scheduling assumptions, memory
 - resource access must be mediated by capabilities
 - component instances must not share mutable state implicitly
 - scheduling and memory behavior must be test-covered
+
+## Related Documentation
+
+- [Runtime Architecture](../architecture/runtime-architecture.md)
+- [Wavium Core](../runtime/wavium-core.md)
+- [Wavium Component Spec](wavium-component-spec.md)

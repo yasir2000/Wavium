@@ -19,3 +19,9 @@ The build system compiles the platform modules, validates contracts, and orchest
 5. run tests and checks
 
 The build layer is where Wavium enforces its architectural contracts before artifacts are produced.
+
+## Related Documentation
+
+- [CLI](cli.md)
+- [Package Format](package-format.md)
+- [WCOE Toolchain Architecture](../wcoe/toolchain-architecture.md)

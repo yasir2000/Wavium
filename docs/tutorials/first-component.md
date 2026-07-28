@@ -38,8 +38,45 @@ Execute the package in the local simulator or runtime harness. The point of this
 
 Confirm that the observed result matches the WIT contract and the component logic. If the output differs, fix the contract or implementation before moving on.
 
+## Worked Example
+
+The binary-friendly echo component below shows a slightly more involved first component, including a fallible operation and a bounded output buffer:
+
+```zig
+const std = @import("std");
+
+pub fn echo(payload: []const u8, out: []u8) !usize {
+    if (out.len < payload.len) return error.BufferTooSmall;
+    @memcpy(out[0..payload.len], payload);
+    return payload.len;
+}
+
+test "echo returns the input bytes" {
+    var out: [16]u8 = undefined;
+    const used = try echo("ping", out[0..]);
+    try std.testing.expectEqual(@as(usize, 4), used);
+    try std.testing.expectEqualStrings("ping", out[0..used]);
+}
+```
+
+```wit
+package wavium:rpc;
+
+world binary-rpc-replacement {
+    export echo: func(payload: list<u8>) -> list<u8>;
+}
+```
+
+The full working source lives in [examples/binary-rpc-replacement](../../examples/binary-rpc-replacement).
+
 ## Outcome
 
 After this tutorial, you should have a working mental model for the full Wavium component lifecycle from source to execution.
 
 This tutorial should be paired with the component and WIT developer guides.
+
+## Related Documentation
+
+- [Hello World](hello-world.md)
+- [Write a WIT Interface](../developers/write-wit-interface.md)
+- [Wavium Component Spec](../specifications/wavium-component-spec.md)

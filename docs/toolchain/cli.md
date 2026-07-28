@@ -25,3 +25,9 @@ flowchart LR
 ```
 
 The CLI should remain thin and deterministic, delegating to the build system and runtime contracts instead of embedding ad hoc business logic.
+
+## Related Documentation
+
+- [Build System](build-system.md)
+- [Package Format](package-format.md)
+- [Command Reference](../reference/command-reference.md)

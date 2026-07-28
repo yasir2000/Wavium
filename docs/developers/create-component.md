@@ -20,3 +20,9 @@ flowchart TD
 - treat packaging and signing as part of the delivery model
 
 Components should be kept portable and free of OS assumptions.
+
+## Related Documentation
+
+- [Component Model](../architecture/component-model.md)
+- [Write a WIT Interface](write-wit-interface.md)
+- [First Component Tutorial](../tutorials/first-component.md)

@@ -17,3 +17,9 @@ Devices are represented as descriptors, capabilities, and ownership state.
 - sensors expose read-only observation capabilities
 
 The model avoids leaking implementation details that would tie components to one specific board or peripheral family.
+
+## Related Documentation
+
+- [Hardware Abstraction](hardware-abstraction.md)
+- [Driver Framework](driver-framework.md)
+- [Wavium Hardware Spec](../specifications/wavium-hardware-spec.md)

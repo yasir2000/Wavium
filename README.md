@@ -104,6 +104,62 @@ The [examples](examples) directory contains scenario-driven samples for:
 - gpu-exec
 - ai-agent-component
 
+## Build Your First Application
+
+Wavium applications are written as WebAssembly Components with a WIT contract. The fastest path from zero to a running component looks like this:
+
+```mermaid
+flowchart TD
+    Write[Write Component Logic] --> Wit[Define WIT World]
+    Wit --> Build[Build Component]
+    Build --> Package[Package as .wvm]
+    Package --> Run[Run in Simulator or Runtime]
+```
+
+1. **Write the component logic.** Keep the first version small and side-effect free:
+
+    ```zig
+    const std = @import("std");
+
+    pub fn greet() []const u8 {
+        return "hello from wavium";
+    }
+
+    test "greet returns a stable message" {
+        try std.testing.expectEqualStrings("hello from wavium", greet());
+    }
+    ```
+
+2. **Define the WIT world.** This is the contract the runtime validates before executing anything:
+
+    ```wit
+    package wavium:hello;
+
+    world hello-component {
+        export greet: func() -> string;
+    }
+    ```
+
+3. **Build and validate** with the workspace scripts:
+
+    ```sh
+    sh scripts/build.sh
+    sh scripts/test.sh
+    ```
+
+4. **Package and run** the component through the toolchain described in [docs/toolchain/cli.md](docs/toolchain/cli.md) and [docs/toolchain/package-format.md](docs/toolchain/package-format.md).
+
+5. **Pick a language SDK** from [sdks](sdks) if you want a polyglot client instead of raw WIT bindings.
+
+### Where To Go Next
+
+- [Hello World Tutorial](docs/tutorials/hello-world.md): the same walkthrough with full explanations.
+- [First Component Tutorial](docs/tutorials/first-component.md): a step-by-step build of a slightly more realistic component.
+- [Actor Example Tutorial](docs/tutorials/actor-example.md): building concurrent, supervised components.
+- [Hardware Example Tutorial](docs/tutorials/hardware-example.md): acquiring and using hardware capabilities safely.
+- [Create a Component](docs/developers/create-component.md) and [Write a WIT Interface](docs/developers/write-wit-interface.md) for the underlying rules.
+- [examples](examples): full working sources for every scenario above, ready to copy and adapt.
+
 ## Quick Start
 
 1. Read the architecture docs in [docs](docs).

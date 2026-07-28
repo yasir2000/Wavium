@@ -13,3 +13,9 @@ This specification defines the bootloader, HAL, discovery, driver, and board sup
 ## Hardware Contract
 
 Hardware support must be expressed as capabilities and manifests rather than as ambient OS device access.
+
+## Related Documentation
+
+- [Hardware Architecture](../architecture/hardware-architecture.md)
+- [Bootloader](../hardware/bootloader.md)
+- [Wavium Security Spec](wavium-security-spec.md)

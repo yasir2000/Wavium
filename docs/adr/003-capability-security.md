@@ -10,3 +10,8 @@ Wavium uses capability-based security to avoid ambient authority and to make eve
 - device and runtime access are mediated
 - least privilege becomes a platform default
 - runtime and hardware policy can be reviewed independently of component code
+
+## Related Documentation
+
+- [Security Model](../architecture/security-model.md)
+- [Wavium Security Spec](../specifications/wavium-security-spec.md)

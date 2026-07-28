@@ -9,3 +9,9 @@ The scheduler is responsible for:
 - deterministic progress under constrained resources
 
 Scheduling policy must remain explicit and testable because runtime behavior is part of the platform contract.
+
+## Related Documentation
+
+- [Wavium Core](wavium-core.md)
+- [Actor System](actor-system.md)
+- [Runtime Architecture](../architecture/runtime-architecture.md)

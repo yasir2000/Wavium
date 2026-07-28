@@ -17,3 +17,9 @@ Wavium debugging spans runtime inspection, boot tracing, and component behavior 
 - physical hardware with serial or JTAG-style debug access
 
 The debugging model needs to work in simulation and on physical hardware.
+
+## Related Documentation
+
+- [Bootloader](../hardware/bootloader.md)
+- [Supported Platforms](../hardware/supported-platforms.md)
+- [CLI](cli.md)

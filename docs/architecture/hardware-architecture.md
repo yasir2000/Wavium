@@ -18,3 +18,9 @@ flowchart LR
     Drivers --> Capabilities[Capability Registry]
     Capabilities --> Runtime[Wavium Runtime]
 ```
+
+## Related Documentation
+
+- [Bootloader](../hardware/bootloader.md)
+- [Hardware Abstraction](../hardware/hardware-abstraction.md)
+- [Wavium Hardware Spec](../specifications/wavium-hardware-spec.md)

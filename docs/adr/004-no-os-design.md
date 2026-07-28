@@ -10,3 +10,8 @@ Wavium intentionally avoids dependency on a general-purpose operating system to 
 - the runtime owns the platform contract
 - portability must be expressed through WIT and the HAL, not through OS APIs
 - more of the stack is documented and tested directly in the repository
+
+## Related Documentation
+
+- [ADR 001: Why Zig](001-why-zig.md)
+- [Hardware Architecture](../architecture/hardware-architecture.md)

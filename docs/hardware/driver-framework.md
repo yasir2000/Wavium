@@ -21,3 +21,9 @@ Drivers are expected to behave as first-class components rather than opaque kern
 6. release capabilities
 
 Driver code must remain small, auditable, and capability-scoped.
+
+## Related Documentation
+
+- [Device Model](device-model.md)
+- [Create a Driver](../developers/create-driver.md)
+- [Wavium Security Spec](../specifications/wavium-security-spec.md)

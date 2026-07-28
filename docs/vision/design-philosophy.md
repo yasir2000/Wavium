@@ -25,3 +25,10 @@ The design philosophy is intentionally infrastructure-grade:
 - docs and tests must evolve with the code
 
 The platform is meant to be auditable, portable, and small enough to run on hardware where a conventional cloud stack would be inappropriate.
+
+## Related Documentation
+
+- [Project Vision](project-vision.md)
+- [Why Wavium](why-wavium.md)
+- [Architecture Overview](../architecture/overview.md)
+- [Security Model](../architecture/security-model.md)

@@ -24,6 +24,36 @@ flowchart TD
 4. interact with the device through the approved interface.
 5. confirm the component never bypasses the trust model.
 
+## Component Source
+
+```zig
+const std = @import("std");
+
+pub fn readSensor(id: u32) []const u8 {
+    return switch (id) {
+        0 => "temperature=21.5C",
+        1 => "humidity=48%",
+        else => "sensor unavailable",
+    };
+}
+
+test "sensor read is stable" {
+    try std.testing.expectEqualStrings("temperature=21.5C", readSensor(0));
+}
+```
+
+## WIT World
+
+```wit
+package wavium:sensor;
+
+world edge-device-sensor {
+    export read_sensor: func(id: u32) -> string;
+}
+```
+
+The full working source lives in [examples/edge-device-sensor](../../examples/edge-device-sensor).
+
 ## Expected Behavior
 
 - capability acquisition is explicit
@@ -34,3 +64,9 @@ flowchart TD
 ## Learning Outcome
 
 You should understand capability acquisition, hardware interaction under policy, and board-aware behavior without OS dependencies.
+
+## Related Documentation
+
+- [Hardware Architecture](../architecture/hardware-architecture.md)
+- [Create a Driver](../developers/create-driver.md)
+- [Wavium Hardware Spec](../specifications/wavium-hardware-spec.md)

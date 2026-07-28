@@ -15,3 +15,9 @@ WIT is the contract surface for portable components.
 If behavior is meant to be shared across languages, put it in WIT before writing language-specific bindings.
 
 When in doubt, model the behavior in WIT before implementing runtime support.
+
+## Related Documentation
+
+- [WIT Model](../architecture/wit-model.md)
+- [SDK Generation](../toolchain/sdk-generation.md)
+- [Create a Component](create-component.md)

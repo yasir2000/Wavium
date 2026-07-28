@@ -15,3 +15,9 @@ To work on Wavium:
 5. update the docs portal if behavior changed
 
 The project is organized around explicit subsystems, so new contributors should start by choosing the subsystem they are working on.
+
+## Related Documentation
+
+- [Contributing Guide](contributing.md)
+- [Create a Component](create-component.md)
+- [Architecture Overview](../architecture/overview.md)
