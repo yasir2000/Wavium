@@ -7,6 +7,9 @@ pub const TargetLanguage = enum {
     c,
     python,
     javascript,
+    java,
+    csharp,
+    php,
 };
 
 pub const SdkDescriptor = struct {
@@ -22,6 +25,9 @@ pub const supported_sdks = [_]SdkDescriptor{
     .{ .language = .c, .package_name = "wavium-c-sdk", .directory_name = "sdks/wavium-c-sdk" },
     .{ .language = .python, .package_name = "wavium-python-sdk", .directory_name = "sdks/wavium-python-sdk" },
     .{ .language = .javascript, .package_name = "wavium-js-sdk", .directory_name = "sdks/wavium-js-sdk" },
+    .{ .language = .java, .package_name = "wavium-java-sdk", .directory_name = "sdks/wavium-java-sdk" },
+    .{ .language = .csharp, .package_name = "wavium-csharp-sdk", .directory_name = "sdks/wavium-csharp-sdk" },
+    .{ .language = .php, .package_name = "wavium-php-sdk", .directory_name = "sdks/wavium-php-sdk" },
 };
 
 pub fn descriptor(language: TargetLanguage) ?SdkDescriptor {
@@ -46,7 +52,7 @@ pub fn sdkCount() usize {
 }
 
 pub fn allLanguages() [supported_sdks.len]TargetLanguage {
-    return .{ .zig, .rust, .go, .c, .python, .javascript };
+    return .{ .zig, .rust, .go, .c, .python, .javascript, .java, .csharp, .php };
 }
 
 test "target language enum" {
@@ -61,9 +67,21 @@ test "sdk registry maps language to package and directory" {
     const js_sdk = descriptor(.javascript).?;
     try std.testing.expectEqualStrings("wavium-js-sdk", js_sdk.package_name);
     try std.testing.expectEqualStrings("sdks/wavium-js-sdk", js_sdk.directory_name);
+
+    const java_sdk = descriptor(.java).?;
+    try std.testing.expectEqualStrings("wavium-java-sdk", java_sdk.package_name);
+    try std.testing.expectEqualStrings("sdks/wavium-java-sdk", java_sdk.directory_name);
+
+    const csharp_sdk = descriptor(.csharp).?;
+    try std.testing.expectEqualStrings("wavium-csharp-sdk", csharp_sdk.package_name);
+    try std.testing.expectEqualStrings("sdks/wavium-csharp-sdk", csharp_sdk.directory_name);
+
+    const php_sdk = descriptor(.php).?;
+    try std.testing.expectEqualStrings("wavium-php-sdk", php_sdk.package_name);
+    try std.testing.expectEqualStrings("sdks/wavium-php-sdk", php_sdk.directory_name);
 }
 
 test "sdk registry covers all package targets" {
-    try std.testing.expectEqual(@as(usize, 6), sdkCount());
-    try std.testing.expectEqual(@as(usize, 6), supported_sdks.len);
+    try std.testing.expectEqual(@as(usize, 9), sdkCount());
+    try std.testing.expectEqual(@as(usize, 9), supported_sdks.len);
 }

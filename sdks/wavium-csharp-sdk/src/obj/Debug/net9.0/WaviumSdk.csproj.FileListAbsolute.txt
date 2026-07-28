@@ -1,0 +1,12 @@
+E:\Code\Wavium\sdks\wavium-csharp-sdk\src\bin\Debug\net9.0\WaviumSdk.deps.json
+E:\Code\Wavium\sdks\wavium-csharp-sdk\src\bin\Debug\net9.0\WaviumSdk.dll
+E:\Code\Wavium\sdks\wavium-csharp-sdk\src\bin\Debug\net9.0\WaviumSdk.pdb
+E:\Code\Wavium\sdks\wavium-csharp-sdk\src\obj\Debug\net9.0\WaviumSdk.GeneratedMSBuildEditorConfig.editorconfig
+E:\Code\Wavium\sdks\wavium-csharp-sdk\src\obj\Debug\net9.0\WaviumSdk.AssemblyInfoInputs.cache
+E:\Code\Wavium\sdks\wavium-csharp-sdk\src\obj\Debug\net9.0\WaviumSdk.AssemblyInfo.cs
+E:\Code\Wavium\sdks\wavium-csharp-sdk\src\obj\Debug\net9.0\WaviumSdk.csproj.CoreCompileInputs.cache
+E:\Code\Wavium\sdks\wavium-csharp-sdk\src\obj\Debug\net9.0\WaviumSdk.sourcelink.json
+E:\Code\Wavium\sdks\wavium-csharp-sdk\src\obj\Debug\net9.0\WaviumSdk.dll
+E:\Code\Wavium\sdks\wavium-csharp-sdk\src\obj\Debug\net9.0\refint\WaviumSdk.dll
+E:\Code\Wavium\sdks\wavium-csharp-sdk\src\obj\Debug\net9.0\WaviumSdk.pdb
+E:\Code\Wavium\sdks\wavium-csharp-sdk\src\obj\Debug\net9.0\ref\WaviumSdk.dll

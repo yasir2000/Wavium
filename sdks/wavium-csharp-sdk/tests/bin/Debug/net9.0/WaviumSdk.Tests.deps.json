@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "WaviumSdk.Tests/1.0.0": {
+        "dependencies": {
+          "WaviumSdk": "0.1.0"
+        },
+        "runtime": {
+          "WaviumSdk.Tests.dll": {}
+        }
+      },
+      "WaviumSdk/0.1.0": {
+        "runtime": {
+          "WaviumSdk.dll": {
+            "assemblyVersion": "0.1.0.0",
+            "fileVersion": "0.1.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "WaviumSdk.Tests/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "WaviumSdk/0.1.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

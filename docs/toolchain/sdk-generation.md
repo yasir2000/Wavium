@@ -10,6 +10,9 @@ SDK generation turns WIT contracts and canonical ABI rules into language-native 
 - C
 - Python
 - JavaScript
+- Java
+- C#
+- PHP
 
 ## SDK Goals
 

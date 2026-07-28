@@ -12,5 +12,8 @@ Current language targets:
 - wavium-c-sdk
 - wavium-python-sdk
 - wavium-js-sdk
+- wavium-java-sdk
+- wavium-csharp-sdk
+- wavium-php-sdk
 
 Each SDK is intended to expose the same capability-first Wavium runtime surface in the target language while keeping generated bindings and handwritten extensions separate.

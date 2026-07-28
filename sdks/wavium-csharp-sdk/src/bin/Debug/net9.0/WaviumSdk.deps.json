@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "WaviumSdk/0.1.0": {
+        "runtime": {
+          "WaviumSdk.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "WaviumSdk/0.1.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

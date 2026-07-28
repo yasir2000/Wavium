@@ -1,0 +1,92 @@
+{
+  "version": 3,
+  "targets": {
+    "net9.0": {
+      "WaviumSdk/0.1.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/WaviumSdk.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WaviumSdk.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "WaviumSdk/0.1.0": {
+      "type": "project",
+      "path": "../src/WaviumSdk.csproj",
+      "msbuildProject": "../src/WaviumSdk.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net9.0": [
+      "WaviumSdk >= 0.1.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\yasir\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "E:\\Code\\Wavium\\sdks\\wavium-csharp-sdk\\tests\\WaviumSdk.Tests.csproj",
+      "projectName": "WaviumSdk.Tests",
+      "projectPath": "E:\\Code\\Wavium\\sdks\\wavium-csharp-sdk\\tests\\WaviumSdk.Tests.csproj",
+      "packagesPath": "C:\\Users\\yasir\\.nuget\\packages\\",
+      "outputPath": "E:\\Code\\Wavium\\sdks\\wavium-csharp-sdk\\tests\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\yasir\\AppData\\Roaming\\NuGet\\NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net9.0"
+      ],
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "projectReferences": {
+            "E:\\Code\\Wavium\\sdks\\wavium-csharp-sdk\\src\\WaviumSdk.csproj": {
+              "projectPath": "E:\\Code\\Wavium\\sdks\\wavium-csharp-sdk\\src\\WaviumSdk.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
+    },
+    "frameworks": {
+      "net9.0": {
+        "targetAlias": "net9.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.316/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

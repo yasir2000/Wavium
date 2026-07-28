@@ -167,12 +167,17 @@ Wavium components are language-neutral at the contract level: every SDK below is
 
 | Language | Package | Directory | Entry Point | Version | Status |
 |---|---|---|---|---|---|
-| Zig | `wavium-zig-sdk` | [sdks/wavium-zig-sdk](sdks/wavium-zig-sdk) | [src/lib.zig](sdks/wavium-zig-sdk/src/lib.zig) | 0.1.0 | Scaffold |
-| Rust | `wavium-rust-sdk` | [sdks/wavium-rust-sdk](sdks/wavium-rust-sdk) | [src/lib.rs](sdks/wavium-rust-sdk/src/lib.rs) | 0.1.0 | Scaffold |
-| Go | `wavium-go-sdk` | [sdks/wavium-go-sdk](sdks/wavium-go-sdk) | [wavium.go](sdks/wavium-go-sdk/wavium.go) | 0.1.0 | Scaffold |
-| C | `wavium-c-sdk` | [sdks/wavium-c-sdk](sdks/wavium-c-sdk) | [include/wavium.h](sdks/wavium-c-sdk/include/wavium.h) | 0.1.0 | Scaffold |
-| Python | `wavium-python-sdk` | [sdks/wavium-python-sdk](sdks/wavium-python-sdk) | [src/wavium_sdk/\_\_init\_\_.py](sdks/wavium-python-sdk/src/wavium_sdk/__init__.py) | 0.1.0 | Scaffold |
-| JavaScript | `wavium-js-sdk` | [sdks/wavium-js-sdk](sdks/wavium-js-sdk) | [index.js](sdks/wavium-js-sdk/index.js) | 0.1.0 | Scaffold |
+| Zig | `wavium-zig-sdk` | [sdks/wavium-zig-sdk](sdks/wavium-zig-sdk) | [src/lib.zig](sdks/wavium-zig-sdk/src/lib.zig) | 0.1.0 | Implemented |
+| Rust | `wavium-rust-sdk` | [sdks/wavium-rust-sdk](sdks/wavium-rust-sdk) | [src/lib.rs](sdks/wavium-rust-sdk/src/lib.rs) | 0.1.0 | Implemented |
+| Go | `wavium-go-sdk` | [sdks/wavium-go-sdk](sdks/wavium-go-sdk) | [wavium.go](sdks/wavium-go-sdk/wavium.go) | 0.1.0 | Implemented |
+| C | `wavium-c-sdk` | [sdks/wavium-c-sdk](sdks/wavium-c-sdk) | [include/wavium.h](sdks/wavium-c-sdk/include/wavium.h) | 0.1.0 | Implemented |
+| Python | `wavium-python-sdk` | [sdks/wavium-python-sdk](sdks/wavium-python-sdk) | [src/wavium_sdk/\_\_init\_\_.py](sdks/wavium-python-sdk/src/wavium_sdk/__init__.py) | 0.1.0 | Implemented |
+| JavaScript | `wavium-js-sdk` | [sdks/wavium-js-sdk](sdks/wavium-js-sdk) | [index.js](sdks/wavium-js-sdk/index.js) | 0.1.0 | Implemented |
+| Java | `wavium-java-sdk` | [sdks/wavium-java-sdk](sdks/wavium-java-sdk) | [Wavium.java](sdks/wavium-java-sdk/src/main/java/io/wavium/sdk/Wavium.java) | 0.1.0 | Implemented |
+| C# | `wavium-csharp-sdk` | [sdks/wavium-csharp-sdk](sdks/wavium-csharp-sdk) | [Wavium.cs](sdks/wavium-csharp-sdk/src/Wavium.cs) | 0.1.0 | Implemented |
+| PHP | `wavium-php-sdk` | [sdks/wavium-php-sdk](sdks/wavium-php-sdk) | [Wavium.php](sdks/wavium-php-sdk/src/Wavium.php) | 0.1.0 | Implemented |
+
+Every SDK implements the same canonical ABI codec (`i32`, `bool`, length-prefixed `string`) and the same `CapabilityHandle` concept as the runtime, and ships with a test suite that runs with only that language's own toolchain — no external test framework required.
 
 ### How SDKs Are Generated
 
@@ -188,6 +193,9 @@ flowchart TD
     Bindgen --> C[C SDK]
     Bindgen --> Python[Python SDK]
     Bindgen --> Js[JavaScript SDK]
+    Bindgen --> Java[Java SDK]
+    Bindgen --> CSharp[C# SDK]
+    Bindgen --> Php[PHP SDK]
 ```
 
 1. A component's public surface is described once in WIT.
@@ -199,12 +207,12 @@ flowchart TD
 
 - Use the **Zig SDK** when building components, drivers, or runtime-adjacent tooling that should compile alongside the core platform.
 - Use the **Rust** or **C** SDKs for systems-level client code that needs precise control over memory and capability handles.
-- Use **Go**, **Python**, or **JavaScript** for operational tooling, orchestration scripts, or application-layer clients that talk to Wavium components without needing bare-metal control.
+- Use **Go**, **Python**, **JavaScript**, **Java**, **C#**, or **PHP** for operational tooling, orchestration scripts, or application-layer clients that talk to Wavium components without needing bare-metal control.
 - All SDKs expose the same capability model: resource access always goes through explicit capability handles, never ambient APIs, regardless of language.
 
 ### SDK Status
 
-Every SDK currently ships as a scaffold: package metadata, an entry-point module, and a short README describing its intended surface. As `wavium-bindgen` gains full multi-language code generation, each scaffold will be filled in with generated bindings while preserving its existing package name, directory, and public entry point. Track progress in [docs/toolchain/sdk-generation.md](docs/toolchain/sdk-generation.md) and [CHANGELOG.md](CHANGELOG.md).
+Every SDK ships with a real, tested canonical ABI implementation: package metadata, an entry-point module with `CapabilityHandle` and `i32`/`bool`/`string` codecs, and a test suite runnable with only that language's own toolchain (`zig test`, `cargo test`, `go test`, `zig cc` + the compiled binary, `python -m unittest`, `node --test`, `javac`/`java`, `dotnet run`, and `php`, respectively). As `wavium-bindgen` gains full multi-language code generation from WIT, these handwritten codecs will be joined by generated bindings while preserving each SDK's existing package name, directory, and public entry point. Track progress in [docs/toolchain/sdk-generation.md](docs/toolchain/sdk-generation.md) and [CHANGELOG.md](CHANGELOG.md).
 
 ## Quick Start
 
@@ -221,7 +229,7 @@ sh scripts/ci.sh
 ## Repository Layout
 
 - [modules](modules): runtime, hardware, toolchain, and subsystem modules
-- [sdks](sdks): generated-language SDK scaffolds
+- [sdks](sdks): implemented language SDKs with shared canonical ABI codecs
 - [docs](docs): architecture, runtime, hardware, toolchain, developer, tutorial, and reference documentation
 - [specs](specs): WAS v0.1 architecture contracts and invariants
 - [tests](tests): component and integration tests
@@ -246,7 +254,7 @@ Implemented and test-validated foundations:
 - component tool lifecycle contracts
 - deploy/update/rollback/migrate trust-gated package admission
 - repository scripts and GitHub Actions workflow set
-- SDK scaffolds for Zig, Rust, Go, C, Python, and JavaScript
+- implemented canonical ABI SDKs for Zig, Rust, Go, C, Python, JavaScript, Java, C#, and PHP
 
 ## License
 
