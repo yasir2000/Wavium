@@ -68,6 +68,477 @@ J --> K[Capability Runtime]
 K --> L[Hardware]
 
 ```
+
+```mermaid
+flowchart LR
+
+subgraph Traditional
+
+A1[Application]
+
+A1 --> A2[Framework]
+
+A2 --> A3[Runtime]
+
+A3 --> A4[Container]
+
+A4 --> A5[Operating System]
+
+A5 --> A6[Kernel]
+
+A6 --> A7[Drivers]
+
+A7 --> A8[Hardware]
+
+end
+
+subgraph Wavium
+
+B1[Application]
+
+B1 --> B2[WASM Component]
+
+B2 --> B3[WIT]
+
+B3 --> B4[Wavium Runtime]
+
+B4 --> B5[Hardware]
+
+end
+```
+
+```mermaid
+flowchart TB
+
+APP[Applications]
+
+APP --> COMPONENTS[WebAssembly Components]
+
+COMPONENTS --> WIT
+
+WIT --> RUNTIME
+
+subgraph Wavium Runtime
+
+RUNTIME --> Scheduler
+
+RUNTIME --> Memory
+
+RUNTIME --> Security
+
+RUNTIME --> Actors
+
+RUNTIME --> Components
+
+RUNTIME --> HAL
+
+end
+
+HAL --> Hardware
+```
+
+```mermaid
+graph TB
+
+Runtime
+
+Runtime --> ActorRuntime
+
+Runtime --> ComponentRuntime
+
+Runtime --> Scheduler
+
+Runtime --> MemoryManager
+
+Runtime --> CapabilityManager
+
+Runtime --> ResourceManager
+
+Runtime --> HardwareManager
+
+Runtime --> PackageManager
+
+Runtime --> Metrics
+
+Runtime --> Logger
+```
+
+```mermaid
+flowchart TB
+
+PowerOn
+
+PowerOn --> Reset
+
+Reset --> Bootloader
+
+Bootloader --> CPU
+
+CPU --> Memory
+
+Memory --> Interrupts
+
+Interrupts --> DeviceDiscovery
+
+DeviceDiscovery --> RuntimeLoader
+
+RuntimeLoader --> Runtime
+
+Runtime --> Components
+
+Components --> Applications
+```
+
+```mermaid
+stateDiagram-v2
+
+[*] --> Loaded
+
+Loaded --> Verified
+
+Verified --> Instantiated
+
+Instantiated --> Initialized
+
+Initialized --> Running
+
+Running --> Suspended
+
+Suspended --> Running
+
+Running --> Stopped
+
+Stopped --> Unloaded
+
+Unloaded --> [*]
+```
+
+```mermaid
+flowchart LR
+
+Developer
+
+Developer --> Build
+
+Build --> WASM
+
+WASM --> WIT
+
+WIT --> Package
+
+Package --> Sign
+
+Sign --> Deploy
+
+Deploy --> Runtime
+
+Runtime --> Execute
+```
+
+```mermaid
+flowchart LR
+
+ActorA
+
+ActorA --> MailboxA
+
+MailboxA --> Scheduler
+
+Scheduler --> ActorB
+
+ActorB --> MailboxB
+
+MailboxB --> Scheduler
+
+Scheduler --> ActorC
+
+ActorC --> MailboxC
+```
+
+```mermaid
+stateDiagram-v2
+
+[*] --> Created
+
+Created --> Ready
+
+Ready --> Running
+
+Running --> Waiting
+
+Waiting --> Ready
+
+Running --> Suspended
+
+Suspended --> Ready
+
+Running --> Terminated
+
+Terminated --> [*]
+```
+
+```mermaid
+flowchart TB
+
+ReadyQueue
+
+ReadyQueue --> PriorityScheduler
+
+PriorityScheduler --> Worker1
+
+PriorityScheduler --> Worker2
+
+PriorityScheduler --> Worker3
+
+Worker1 --> ReadyQueue
+
+Worker2 --> ReadyQueue
+
+Worker3 --> ReadyQueue
+```
+
+```mermaid
+flowchart TB
+
+Application
+
+Application --> ActorAllocator
+
+ActorAllocator --> ArenaAllocator
+
+ArenaAllocator --> SlabAllocator
+
+SlabAllocator --> PhysicalAllocator
+
+PhysicalAllocator --> BareMetalMemory
+```
+
+
+```mermaid
+sequenceDiagram
+
+participant Component
+
+participant Runtime
+
+participant Allocator
+
+participant PhysicalMemory
+
+Component->>Runtime: allocate()
+
+Runtime->>Allocator: request
+
+Allocator->>PhysicalMemory: reserve
+
+PhysicalMemory-->>Allocator: block
+
+Allocator-->>Runtime: pointer
+
+Runtime-->>Component: handle
+```
+
+```mermaid
+flowchart TB
+
+Component
+
+Component --> Request
+
+Request --> CapabilityManager
+
+CapabilityManager --> PolicyEngine
+
+PolicyEngine --> Allowed
+
+PolicyEngine --> Denied
+
+Allowed --> Resource
+
+Denied --> Reject
+```
+
+
+```mermaid
+flowchart TB
+
+Component
+
+Component --> WIT
+
+WIT --> Capability
+
+Capability --> HAL
+
+HAL --> CPU
+
+HAL --> GPU
+
+HAL --> Storage
+
+HAL --> Network
+
+HAL --> Sensors
+```
+
+```mermaid
+flowchart TB
+
+Boot
+
+Boot --> ACPI
+
+Boot --> DeviceTree
+
+ACPI --> Registry
+
+DeviceTree --> Registry
+
+Registry --> Driver
+
+Driver --> Capability
+
+Capability --> Runtime
+```
+
+```mermaid
+flowchart LR
+
+Hardware
+
+Hardware --> Driver
+
+Driver --> WIT
+
+WIT --> Runtime
+
+Runtime --> Components
+```
+
+```mermaid
+flowchart TB
+
+Rust
+
+Go
+
+Zig
+
+Python
+
+C++
+
+JavaScript
+
+Rust --> WASM
+
+Go --> WASM
+
+Zig --> WASM
+
+Python --> WASM
+
+C++ --> WASM
+
+JavaScript --> WASM
+
+WASM --> WIT
+
+WIT --> Runtime
+```
+
+```mermaid
+sequenceDiagram
+
+participant ComponentA
+
+participant WIT
+
+participant Runtime
+
+participant ComponentB
+
+ComponentA->>WIT: call()
+
+WIT->>Runtime: invoke
+
+Runtime->>ComponentB: execute
+
+ComponentB-->>Runtime: response
+
+Runtime-->>WIT: return
+
+WIT-->>ComponentA: result
+```
+
+```mermaid
+flowchart TB
+
+Applications
+
+Applications --> Components
+
+Components --> WIT
+
+WIT --> Runtime
+
+Runtime --> Actors
+
+Actors --> Scheduler
+
+Scheduler --> Memory
+
+Memory --> HAL
+
+HAL --> Hardware
+```
+
+```mermaid
+graph TD
+
+Wavium
+
+Wavium --> Boot
+
+Wavium --> Runtime
+
+Wavium --> Memory
+
+Wavium --> Scheduler
+
+Wavium --> Actors
+
+Wavium --> Components
+
+Wavium --> HAL
+
+Wavium --> Drivers
+
+Wavium --> Security
+
+Wavium --> Toolchain
+
+Wavium --> SDK
+
+Wavium --> CLI
+
+Wavium --> Packages
+
+Wavium --> Documentation
+
+Wavium --> Benchmarks
+
+Wavium --> Tests
+```
+
+
+
+
+
+
+
+
+
 ## Documentation
 
 Primary documentation lives under [docs](docs):
