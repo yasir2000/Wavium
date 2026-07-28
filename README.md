@@ -42,10 +42,55 @@ Primary documentation lives under [docs](docs):
 - [Developers](docs/developers/getting-started.md)
 - [Specifications](docs/specifications/wavium-runtime-spec.md)
 - [Tutorials](docs/tutorials/hello-world.md)
+# Wavium
+<img width="250" height="110" alt="Wavium logo" src="https://github.com/user-attachments/assets/cb1f62d9-a6e8-419f-aba5-62ab624dd094" />
+
+Wavium is a Zig-based, bare-metal WebAssembly execution platform for running portable WebAssembly Components directly on hardware.
+
+It is designed as infrastructure rather than an application framework. The stable boundary is the WebAssembly Component Model, the contract surface is WIT, and the execution substrate is a capability-secured runtime that can boot on bare metal, simulate in CI, and scale across hardware classes.
+
+## System Model
+
+```mermaid
+flowchart TD
+    App[Application] --> Comp[WASM Component]
+    Comp --> Wit[WIT Interface Contract]
+    Wit --> Run[Wavium Runtime]
+    Run --> Hal[Hardware Capability Layer]
+    Hal --> Hw[Physical Hardware]
+```
+
+Traditional systems usually follow the path:
+
+Application -> Libraries -> Operating System -> Kernel -> Hardware
+
+Wavium follows a component-native model:
+
+Application -> WASM Component -> WIT Contract -> Wavium Runtime -> Hardware
+
+This architecture is intended to improve:
+- portability across languages and targets
+- security through explicit capability boundaries
+- scalability through portable component packaging
+- performance through bare-metal execution and deterministic runtime control
+- polyglot development through generated SDKs
+
+## Documentation
+
+Primary documentation lives under [docs](docs):
+- [Vision](docs/vision/project-vision.md)
+- [Architecture](docs/architecture/overview.md)
+- [Runtime](docs/runtime/wavium-core.md)
+- [Hardware](docs/hardware/bootloader.md)
+- [Toolchain](docs/toolchain/cli.md)
+- [Developers](docs/developers/getting-started.md)
+- [Specifications](docs/specifications/wavium-runtime-spec.md)
+- [Tutorials](docs/tutorials/hello-world.md)
 - [Reference](docs/reference/command-reference.md)
 - [ADRs](docs/adr/001-why-zig.md)
+- [WCOE Index](docs/wcoe/README.md)
 
-Supporting docs and process files:
+Supporting project docs:
 - [docs/README.md](docs/README.md)
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [SECURITY.md](SECURITY.md)
@@ -60,7 +105,7 @@ Scripts:
 - [scripts/sdk-status.sh](scripts/sdk-status.sh) and [scripts/sdk-status.ps1](scripts/sdk-status.ps1)
 - [scripts/ci.sh](scripts/ci.sh) and [scripts/ci.ps1](scripts/ci.ps1)
 
-CI:
+CI workflows:
 - [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
 - [`.github/workflows/build.yml`](.github/workflows/build.yml)
 - [`.github/workflows/test.yml`](.github/workflows/test.yml)
@@ -93,13 +138,13 @@ sh scripts/ci.sh
 
 - [modules](modules): runtime, hardware, toolchain, and subsystem modules
 - [sdks](sdks): generated-language SDK scaffolds
-- [docs](docs): architecture, runtime, hardware, toolchain, and developer documentation
+- [docs](docs): architecture, runtime, hardware, toolchain, developer, tutorial, and reference documentation
 - [specs](specs): WAS v0.1 architecture contracts and invariants
 - [tests](tests): component and integration tests
 - [scripts](scripts): workspace automation wrappers
 - [.github](.github): CI workflows and contribution templates
 
-## Current Status
+## Project Status
 
 Implemented and test-validated foundations:
 - runtime lifecycle and service registry primitives
@@ -123,7 +168,7 @@ Implemented and test-validated foundations:
 
 Wavium is intended to be released under [Apache License 2.0](LICENSE).
 
-Apache 2.0 is the recommended license for this project because it is a strong fit for infrastructure software: it supports broad adoption, includes an explicit patent grant, and matches the governance model used by major open-source systems projects.
+Apache 2.0 is a strong fit for infrastructure software because it supports broad adoption, includes an explicit patent grant, and aligns with the governance model used by major open-source systems projects.
 
 ## Contributing
 
