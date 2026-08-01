@@ -1,0 +1,37 @@
+flowchart TD
+    subgraph PerCore["Per-core state (no cross-core sync for the common case)"]
+        SCHED["wavium-coresched<br/>one CoreScheduler per core"]
+        STEAL["wavium-work-steal<br/>Chase-Lev deque per core"]
+        TIMERS["timers.zig<br/>DistributedTimers: one wheel per core"]
+        QUEUES["queues.zig<br/>DistributedQueues: one queue per core<br/>+ explicit steal()"]
+        ALLOC["allocator.zig<br/>DistributedAllocatorRouter -&gt; per-core AllocFn/FreeFn seam"]
+    end
+
+    subgraph Sharded["Sharded shared state (hash-routed, no global lock)"]
+        SHARD["sharding.zig<br/>computeShard(key, shard_count)"]
+        REG["registry.zig<br/>DistributedActorRegistry"]
+        META["metadata.zig<br/>DistributedMetadataStore"]
+        SHARD --> REG
+        SHARD --> META
+    end
+
+    subgraph FanOut["Hierarchical fan-out for whole-system operations"]
+        SCALE["scaling.zig<br/>groupCountFor(core_count) ~ sqrt(N) groups"]
+    end
+
+    subgraph Locality["Locality hints (reduce cost of the sync that remains)"]
+        TOPO["wavium-topology<br/>cache/NUMA sharing"]
+        AFF["wavium-affinity<br/>pinning + latency-optimal placement"]
+    end
+
+    STEAL -- "idle core randomly samples a peer" --> STEAL
+    SCHED --> STEAL
+    QUEUES -- "occasional rebalance" --> QUEUES
+    TOPO --> STEAL
+    AFF --> SCHED
+    FanOut -- "load reporting / rebalancing at scale" --> SCHED
+
+    PerCore --> Result["Scales 8 -&gt; 1024 logical CPUs<br/>with minimal synchronization"]
+    Sharded --> Result
+    FanOut --> Result
+    Locality --> Result

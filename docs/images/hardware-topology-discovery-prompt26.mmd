@@ -1,0 +1,33 @@
+flowchart TD
+    subgraph Probing
+        AP[arch_probe.zig<br/>DiscoveryMethod: x86_cpuid / arm64_mpidr / riscv_hart_sbi<br/>ArchProbe / ProbeFn seam]
+    end
+
+    subgraph Model
+        IDS[ids.zig<br/>SocketId / PackageId / CoreId / LogicalCpuId / NumaNodeId<br/>LogicalCpuDescriptor]
+        CD[cache_domains.zig<br/>CacheDomainTable: L1/L2/L3 sharing bitmasks]
+        MC[memory_controller.zig<br/>MemoryControllerTable]
+        GR[graph.zig<br/>TopologyGraph]
+    end
+
+    subgraph Discovery
+        DISC[discovery.zig<br/>discoverTopology&#40;method, sockets, packages/socket,<br/>cores/package, smt_width, numa_nodes/socket,<br/>mem_ctrls/socket&#41;]
+    end
+
+    subgraph Export
+        EXP_S[export.zig<br/>exportForScheduler&#40;&#41; -&gt; SchedulerCoreHint&#91;&#93;]
+        EXP_R[export.zig<br/>exportForRuntime&#40;&#41; -&gt; RuntimeTopologySummary]
+    end
+
+    AP --> DISC
+    IDS --> DISC
+    DISC --> GR
+    DISC --> CD
+    DISC --> MC
+    GR --> EXP_S
+    GR --> EXP_R
+    CD --> EXP_S
+    MC --> EXP_R
+
+    EXP_S --> SCHED[Scheduler<br/>cache/NUMA-locality-aware placement]
+    EXP_R --> RUNTIME[Runtime<br/>capacity planning / reporting]
