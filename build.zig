@@ -45,6 +45,7 @@ pub fn build(b: *std.Build) void {
         "modules/wavium-work-steal/src/lib.zig",
         "modules/wavium-affinity/src/lib.zig",
         "modules/wavium-cache/src/lib.zig",
+        "modules/wavium-topology/src/lib.zig",
     };
 
     inline for (module_paths) |p| {
