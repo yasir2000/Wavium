@@ -48,6 +48,8 @@ pub fn build(b: *std.Build) void {
         "modules/wavium-topology/src/lib.zig",
         "modules/wavium-massive-parallel/src/lib.zig",
         "modules/wavium-dist-services/src/lib.zig",
+        "modules/wavium-benchlab/src/lib.zig",
+        "modules/wavium-heterogeneous/src/lib.zig",
     };
 
     inline for (module_paths) |p| {

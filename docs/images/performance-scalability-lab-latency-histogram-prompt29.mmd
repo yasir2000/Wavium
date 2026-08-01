@@ -1,0 +1,11 @@
+%% Latency histogram: p50 vs p99 latency (ticks) for the
+%% degrades_with_cores kind `cross_core_messaging`, taken from the
+%% generated report (docs/reports/performance-scalability-lab-report.md).
+%% The log2(core_count) contention penalty pushes p50 into the same
+%% bucket as p99 once core_count >= 2.
+xychart-beta
+    title "cross_core_messaging latency (ticks) vs. CPU count"
+    x-axis "CPUs" [1, 2, 4, 8, 16, 32, 64, 128]
+    y-axis "Latency ticks" 0 --> 64
+    line "p50" [32, 64, 64, 64, 64, 64, 64, 64]
+    line "p99" [64, 64, 64, 64, 64, 64, 64, 64]

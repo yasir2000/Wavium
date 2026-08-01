@@ -1,0 +1,22 @@
+%% Synchronization: local access is an unconditional fast path;
+%% only cross-node access ever pays a synchronization cost.
+sequenceDiagram
+    participant Caller as Caller (on Node A)
+    participant Policy as SyncPolicy
+    participant Local as Service Instance (Node A)
+    participant Remote as Service Instance (Node B)
+    participant SyncFn as SyncFn (e.g. wavium-ipi)
+
+    Caller->>Policy: access(kind, local=A, key)
+    Policy->>Policy: home = router.homeNodeFor(key)
+
+    alt home == A (local fast path)
+        Policy->>Local: use instance directly
+        Local-->>Caller: result (no synchronization)
+    else home == B (cross-node)
+        Policy->>SyncFn: sync(from=A, to=B, reason)
+        SyncFn->>Remote: reconcile / migrate / message
+        Remote-->>SyncFn: ack
+        SyncFn-->>Policy: ok
+        Policy-->>Caller: result (synchronized)
+    end

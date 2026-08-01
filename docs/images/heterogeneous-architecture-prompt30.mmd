@@ -1,0 +1,37 @@
+flowchart TD
+    subgraph App["Application"]
+        Req["ComputeRequest{required: CapabilitySet}"]
+    end
+
+    Req --> Compute["compute.execute(request, payload)"]
+
+    Compute --> Map["capability_mapping.selectTarget()"]
+
+    subgraph Registry["TargetRegistry (max 64)"]
+        CpuBig["cpu_big"]
+        CpuLittle["cpu_little"]
+        Gpu["gpu"]
+        Npu["npu"]
+        Dpu["dpu"]
+        SmartNic["smartnic"]
+        Fpga["fpga"]
+        AiAcc["ai_accelerator"]
+        Tpu["tpu"]
+    end
+
+    Map -->|scans available targets| Registry
+    Map -->|hard-requirement best match| Chosen["Chosen ExecutionTarget"]
+
+    Chosen --> ExecuteFn["ExecuteFn seam (future backend)"]
+    ExecuteFn --> Result["ExecutionResult{target_kind, target_id, succeeded}"]
+
+    subgraph Discovery["Accelerator discovery"]
+        DiscoverFn["DiscoverFn seam (future PCIe/vendor/firmware probe)"]
+    end
+
+    DiscoverFn -->|discoverAndRegister| Registry
+
+    Chosen -->|becomes unavailable| Migration["migration.planAndMigrate()"]
+    Migration -->|re-selectTarget| Map
+    Migration --> MigrateFn["MigrateFn seam (future state transfer)"]
+    MigrateFn --> NewChosen["New ExecutionTarget"]

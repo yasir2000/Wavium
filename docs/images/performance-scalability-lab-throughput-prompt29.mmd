@@ -1,0 +1,11 @@
+%% Throughput graph: operations scale near-linearly with core count
+%% for "improves_with_cores" kinds (e.g. actor_creation), while
+%% "degrades_with_cores" kinds (e.g. cross_core_messaging) scale
+%% sub-linearly due to contention.
+xychart-beta
+    title "Operations vs. CPU count (1-128)"
+    x-axis "CPUs" [1, 2, 4, 8, 16, 32, 64, 128]
+    y-axis "Operations" 0 --> 130000
+    line "actor_creation (improves_with_cores)" [1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000]
+    line "cross_core_messaging (degrades_with_cores)" [540, 1080, 2160, 4320, 8640, 17280, 34560, 69120]
+    line "capability_lookup (flat)" [1800, 1800, 1800, 1800, 1800, 1800, 1800, 1800]

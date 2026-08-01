@@ -1,0 +1,22 @@
+%% Flame graph model: one root frame per benchmark suite run, with
+%% one child frame per BenchmarkKind, self ticks derived from the
+%% operation count measured at 128 CPUs.
+graph TD
+    Root["performance_scalability_lab (root)"]
+
+    Root --> AC["actor_creation"]
+    Root --> AM["actor_messaging"]
+    Root --> MT["mailbox_throughput"]
+    Root --> CS["context_switching"]
+    Root --> MA["memory_allocation"]
+    Root --> CST["component_startup"]
+    Root --> SL["scheduler_latency"]
+    Root --> CCM["cross_core_messaging"]
+    Root --> WS["work_stealing"]
+    Root --> CL["capability_lookup"]
+
+    AC --> AC1["spawn"]
+    AM --> AM1["send"]
+    MT --> MT1["enqueue/dequeue"]
+
+    style Root fill:#f96,stroke:#333
