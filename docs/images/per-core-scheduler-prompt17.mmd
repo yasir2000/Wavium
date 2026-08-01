@@ -1,0 +1,28 @@
+flowchart TD
+    subgraph CPU0["CPU0"]
+        R0[Ready Queue] --> W0[Worker]
+        A0[Actor Queue]
+        T0[Timer Queue]
+    end
+
+    subgraph CPU1["CPU1"]
+        R1[Ready Queue] --> W1[Worker]
+        A1[Actor Queue]
+        T1[Timer Queue]
+    end
+
+    subgraph CPU2["CPU2 ..."]
+        R2[Ready Queue] --> W2[Worker]
+        A2[Actor Queue]
+        T2[Timer Queue]
+    end
+
+    Balancer[balancer.rebalance - NUMA-aware greedy imbalance check] -->|steal.stealHalf| R0
+    Balancer -->|steal.stealHalf| R1
+    Balancer -->|steal.stealHalf| R2
+
+    Migration[migration.migrateActor - affinity-checked] --> A0
+    Migration --> A1
+    Migration --> A2
+
+    Affinity[affinity.TaskAffinity - CPU pin mask] -.constrains.-> Migration

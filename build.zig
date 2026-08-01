@@ -35,6 +35,16 @@ pub fn build(b: *std.Build) void {
         "modules/wavium-sim/src/lib.zig",
         "modules/wavium-ci/src/lib.zig",
         "modules/wavium-board/src/lib.zig",
+        "modules/wavium-smp/src/lib.zig",
+        "modules/wavium-coresched/src/lib.zig",
+        "modules/wavium-lockfree/src/lib.zig",
+        "modules/wavium-actor-dist/src/lib.zig",
+        "modules/wavium-ipi/src/lib.zig",
+        "modules/wavium-numa/src/lib.zig",
+        "modules/wavium-percore-alloc/src/lib.zig",
+        "modules/wavium-work-steal/src/lib.zig",
+        "modules/wavium-affinity/src/lib.zig",
+        "modules/wavium-cache/src/lib.zig",
     };
 
     inline for (module_paths) |p| {

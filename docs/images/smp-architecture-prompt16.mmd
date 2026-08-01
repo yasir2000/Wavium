@@ -1,0 +1,19 @@
+flowchart TD
+    subgraph BSP["Bootstrap Processor (Core 0)"]
+        Reset[Hardware Reset] --> BspInit[boot.initBootstrap]
+        BspInit --> BspOnline[Core 0: offline -> starting -> online]
+    end
+
+    BspOnline --> Detect[topology.detect - sockets / NUMA nodes / SMT siblings]
+    Detect --> StartAll[boot.startAllSecondaries]
+
+    subgraph AP["Application Processors (Cores 1..N)"]
+        StartAll --> Launch[startup.SecondaryLauncher.launch]
+        Launch --> Wake[ipi.IpiSender.wake - arch-specific wake seam]
+        Wake --> ApOnline[Core: offline -> starting -> online]
+        Wake -->|start_fn fails| ApOffline[Core stays offline - retryable]
+    end
+
+    ApOnline --> Affinity[cpu.CpuAffinity - per-core scheduling mask]
+    ApOnline --> Registry[core.CoreRegistry - online/offline/halted tracking]
+    Registry -->|CPU hotplug| Halted[halted] --> Registry

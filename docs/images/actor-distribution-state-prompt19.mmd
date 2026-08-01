@@ -1,0 +1,25 @@
+stateDiagram-v2
+    [*] --> Unregistered
+
+    Unregistered --> OwnedLocal: register(actor_id, owner_core = self)
+    Unregistered --> OwnedRemote: register(actor_id, owner_core = other)
+
+    OwnedLocal --> OwnedRemote: transfer() / migrateActor() to another core
+    OwnedRemote --> OwnedLocal: transfer() / migrateActor() to this core
+    OwnedRemote --> OwnedRemote: transfer() to a different remote core
+
+    OwnedLocal --> Unregistered: unregister()
+    OwnedRemote --> Unregistered: unregister()
+
+    state OwnedLocal {
+        [*] --> Idle
+        Idle --> Executing: mailbox_router.route() -> local
+        Executing --> Idle: message processed
+    }
+
+    note right of OwnedRemote
+        Pinned actors (descriptor.pinned_core != null)
+        can only ever be "migrated" to their own
+        pinned core - migrateActor() rejects any
+        other target with PinnedElsewhere.
+    end note

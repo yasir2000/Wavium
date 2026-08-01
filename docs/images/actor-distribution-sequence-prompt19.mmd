@@ -1,0 +1,32 @@
+sequenceDiagram
+    participant Sender
+    participant Router as MailboxRouter (local_core)
+    participant Table as OwnershipTable
+    participant LocalMailbox as deliver_local
+    participant RemoteTransport as deliver_remote (IPC/IPI)
+    participant OwnerCore as Owning core's actor
+
+    Sender->>Router: route(actor_id, message)
+    Router->>Table: ownerOf(actor_id)
+    Table-->>Router: owner_core
+
+    alt owner_core == local_core
+        Router->>LocalMailbox: deliver_local(actor_id, message)
+        LocalMailbox->>OwnerCore: enqueue into local mailbox
+        LocalMailbox-->>Router: true
+        Router-->>Sender: Destination.local
+    else owner_core != local_core
+        Router->>RemoteTransport: deliver_remote(actor_id, message)
+        RemoteTransport->>OwnerCore: forward over cross-core transport
+        RemoteTransport-->>Router: true
+        Router-->>Sender: Destination.remote
+    end
+
+    Note over Sender,OwnerCore: If ownerOf() returns null, route() fails fast with ActorNotFound.
+
+    Sender->>Table: (load balancer) chooseCore(descriptor, loads)
+    Table-->>Sender: least-loaded core, or pinned_core if set
+
+    Sender->>Table: migration.migrateActor(descriptor, target_core)
+    Table->>Table: transfer(actor_id, target_core)
+    Table-->>Sender: ownership updated (or PinnedElsewhere / ActorNotFound)

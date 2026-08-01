@@ -1,0 +1,36 @@
+flowchart TB
+    subgraph Core0["Core 0"]
+        A0["Arena"]
+        P0["Pool (per size class)"]
+        S0["Slab"]
+        R0["Region"]
+        RF0["RemoteFreeQueue"]
+        CA0["CoreAllocator"]
+
+        R0 -->|"carve()"| A0
+        R0 -->|"backs storage"| S0
+        S0 -->|"manages"| P0
+        CA0 -->|"alloc()/freeLocal()"| S0
+        CA0 -->|"reclaimRemote()"| RF0
+    end
+
+    subgraph Core1["Core 1"]
+        A1["Arena"]
+        P1["Pool (per size class)"]
+        S1["Slab"]
+        R1["Region"]
+        RF1["RemoteFreeQueue"]
+        CA1["CoreAllocator"]
+
+        R1 -->|"carve()"| A1
+        R1 -->|"backs storage"| S1
+        S1 -->|"manages"| P1
+        CA1 -->|"alloc()/freeLocal()"| S1
+        CA1 -->|"reclaimRemote()"| RF1
+    end
+
+    CA1 -->|"free(block, size, core=1)\n(block owned by Core 0)"| RF0
+    CA0 -->|"free(block, size, core=0)\n(block owned by Core 1)"| RF1
+
+    style Core0 fill:#1e293b,color:#f8fafc
+    style Core1 fill:#1e293b,color:#f8fafc

@@ -1,0 +1,22 @@
+flowchart TD
+    E["EntityRef (actor / component / runtime_service)"] --> R["scheduler.resolveCore()"]
+
+    R --> H{"Hard pin\nin PinTable?"}
+    H -- "yes" --> HC["Return pinned cpu\n(overrides isolation)"]
+    H -- "no" --> S{"Soft pin\nin PinTable?"}
+    S -- "yes" --> P["preferred = soft-pinned cpu"]
+    S -- "no" --> G{"Member of\nan AffinityGroup?"}
+    G -- "yes" --> P2["preferred = group.assignedCpu"]
+    G -- "no" --> P3["preferred = null"]
+
+    P --> L["latency.chooseLatencyOptimalCore()"]
+    P2 --> L
+    P3 --> L
+
+    L --> I{"preferred set and\nnot isolated?"}
+    I -- "yes" --> L1["Return preferred cpu"]
+    I -- "no" --> L2["Return least-loaded\nnon-isolated candidate"]
+
+    style HC fill:#1e293b,color:#f8fafc
+    style L1 fill:#1e293b,color:#f8fafc
+    style L2 fill:#1e293b,color:#f8fafc

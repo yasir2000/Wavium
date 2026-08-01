@@ -1,0 +1,39 @@
+flowchart TB
+    subgraph Node["node.zig"]
+        DETECT["detect(node_count, cores_per_node)"]
+        TOPO["NumaTopology\n(nodes[] + distance matrix)"]
+        DETECT --> TOPO
+    end
+
+    subgraph Placement["placement.zig"]
+        HINT["PlacementHint\n(preferred_node)"]
+        LOADS["NodeLoad[]"]
+        CHOOSE["chooseNode()"]
+        HINT --> CHOOSE
+        LOADS --> CHOOSE
+    end
+
+    subgraph Alloc["allocator.zig"]
+        NODEALLOC["NodeAllocator.allocateOn()"]
+    end
+
+    subgraph Stats["statistics.zig"]
+        RECORD["recordAccess(accessing_node, home_node)"]
+        RATIO["remoteRatio(node)"]
+        RECORD --> RATIO
+    end
+
+    subgraph Migration["migration.zig"]
+        EVAL["evaluateMigration()"]
+    end
+
+    TOPO --> CHOOSE
+    TOPO --> NODEALLOC
+    CHOOSE -->|home node| NODEALLOC
+    RATIO -->|feeds| EVAL
+    TOPO -.distance-aware fallback.-> NODEALLOC
+    EVAL -->|MigrationDecision| NODEALLOC
+
+    SCHED["Scheduler"] -.-> HINT
+    MEMMGR["Memory manager"] -.-> NODEALLOC
+    ACTOR["Actor runtime"] -.-> CHOOSE

@@ -1,0 +1,30 @@
+flowchart TB
+    subgraph Queues["Bounded Queues"]
+        SPSC["SpscQueue&lt;T,N&gt;\nwait-free, 1P/1C"]
+        MPSC["MpscQueue&lt;T,N&gt;\nlock-free, NP/1C"]
+        MPMC["MpmcQueue&lt;T,N&gt;\nlock-free, NP/NC\n(Vyukov)"]
+    end
+
+    RB["RingBuffer&lt;T,N&gt;\nplain circular buffer\n(base storage shape)"]
+    RB -.shape shared with.-> SPSC
+    RB -.shape shared with.-> MPSC
+    RB -.shape shared with.-> MPMC
+
+    subgraph SlotMgmt["Slot Management"]
+        FREE["LockFreeFreelist&lt;N&gt;\ntagged (gen|index) head"]
+        STACK["LockFreeStack&lt;T,N&gt;\nTreiber-style LIFO"]
+        FREE --> STACK
+    end
+
+    BITMAP["AtomicBitmap&lt;N&gt;\nfetchOr/fetchAnd,\ntestAndSet, findFirstClear"]
+    HASHMAP["ConcurrentHashMap&lt;K,V,N&gt;\nopen addressing,\nCAS'd slot state machine"]
+
+    RECLAIM["EpochReclaimer&lt;P,N&gt;\nenter/leave/retire/reclaim"]
+    RECLAIM -.guards recycling of.-> FREE
+    RECLAIM -.guards recycling of.-> STACK
+
+    BENCH["benchmark.compareQueues()\nMpmcQueue vs SpinlockQueue baseline"]
+    MPMC -.compared against.-> BENCH
+
+    style Queues fill:#eef,stroke:#446
+    style SlotMgmt fill:#efe,stroke:#464

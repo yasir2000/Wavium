@@ -1,0 +1,28 @@
+flowchart LR
+    subgraph Worker0["Worker 0 (owner)"]
+        HQ0["high deque"]
+        NQ0["normal deque"]
+        LQ0["low deque"]
+        W0["popOwn() - LIFO bottom"]
+        W0 --> HQ0
+        W0 --> NQ0
+        W0 --> LQ0
+    end
+
+    subgraph Worker1["Worker 1 (idle)"]
+        RNG["Rng.next()"]
+        VS["selectRandomVictim()"]
+        ST["stealFrom() - FIFO top"]
+        RNG --> VS --> ST
+    end
+
+    ST -->|"steal() high first"| HQ0
+    ST -->|"steal() then normal"| NQ0
+    ST -->|"steal() then low"| LQ0
+
+    AGE["fairness.tick()\nAgingEntry promotion"]
+    LQ0 -.->|"waited too long"| AGE
+    AGE -.->|"promoted to normal/high"| NQ0
+
+    style Worker0 fill:#1e293b,color:#f8fafc
+    style Worker1 fill:#1e293b,color:#f8fafc

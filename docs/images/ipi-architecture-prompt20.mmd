@@ -1,0 +1,32 @@
+flowchart TB
+    subgraph Arch["Architecture Abstraction (arch.zig)"]
+        APIC["x86 APIC\n(ICR write)"]
+        GIC["ARM GIC\n(SGI generation)"]
+        CLINT["RISC-V CLINT/SBI\n(MSIP / sbi_send_ipi)"]
+        BACKEND["ArchBackend{arch, send_fn}"]
+        APIC -.-> BACKEND
+        GIC -.-> BACKEND
+        CLINT -.-> BACKEND
+    end
+
+    subgraph Vectors["Logical IPI reasons (vector.zig)"]
+        WAKE["wake\n(remote actor wake-up)"]
+        RESCHED["reschedule\n(cross-core scheduling)"]
+        MEMSYNC["memory_sync\n(cross-core memory sync)"]
+        MAILBOX["mailbox_notify\n(remote mailbox notification)"]
+        HALT["halt"]
+    end
+
+    subgraph Transport["transport.zig"]
+        SEND["send(core, vector)"]
+        BROADCAST["broadcast(core_count, vector)"]
+        MULTICAST["multicast(mask, vector)"]
+    end
+
+    BARRIER["barrier.zig\nBarrier.arrive()\n(cross-core sync point)"]
+    BENCH["benchmark.zig\nrunSuite()"]
+
+    Vectors --> Transport
+    Transport --> BACKEND
+    Transport -.timed by.-> BENCH
+    BARRIER -.complements.-> Transport

@@ -1,0 +1,57 @@
+graph TD
+    subgraph Hierarchy["hierarchy.zig - L1/L2/L3"]
+        H1[CacheHierarchy.default]
+        H2[LevelInfo: size_bytes, line_bytes]
+        H3[tileCount for data-locality sizing]
+        H1 --> H2
+        H2 --> H3
+    end
+
+    subgraph Alignment["alignment.zig"]
+        A1["CacheAligned(T)"]
+        A2["align(cache_line_bytes) field"]
+        A1 --> A2
+    end
+
+    subgraph Padding["padding.zig"]
+        P1["Padded(T)"]
+        P2["paddingBytes / paddingFor"]
+        P2 --> P1
+    end
+
+    subgraph Prefetch["prefetch.zig"]
+        PF1["prefetch(ptr, access, locality, target)"]
+        PF2["@prefetch builtin"]
+        PF1 --> PF2
+    end
+
+    subgraph HotCold["hotcold.zig"]
+        HC1["HotColdArray(Hot, Cold, capacity)"]
+        HC2["hot: [capacity]Hot"]
+        HC3["cold: [capacity]Cold"]
+        HC1 --> HC2
+        HC1 --> HC3
+    end
+
+    subgraph Packing["packing.zig"]
+        PK1["PackedFlags(n)"]
+        PK2["paddingWaste / fieldSizeSum"]
+    end
+
+    subgraph Benchmark["benchmark.zig"]
+        B1[Naive AoS]
+        B2[Padded]
+        B3[Hot/Cold split]
+        B1 --> B4[Compare sums]
+        B2 --> B4
+        B3 --> B4
+    end
+
+    Lib["lib.zig: cache_aligned, padding, prefetch"]
+    Hierarchy --> Lib
+    Alignment --> Lib
+    Padding --> Lib
+    Prefetch --> Lib
+    HotCold --> Lib
+    Packing --> Lib
+    Lib --> Benchmark
