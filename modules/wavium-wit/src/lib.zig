@@ -4,12 +4,35 @@ pub const WitWorld = struct {
     name: []const u8,
     import_count: u16,
     export_count: u16,
+    imports: []const WitInterface = &.{},
+    exports: []const WitInterface = &.{},
 };
 
 pub const WitPackage = struct {
     namespace: []const u8,
     world: []const u8,
     worlds: []const WitWorld,
+};
+
+/// A single named function signature within a WIT interface, expressed in
+/// terms of canonical ABI types (Prompt 12: WIT interface definitions).
+pub const WitFunctionSignature = struct {
+    name: []const u8,
+    params: []const CanonicalAbiType,
+    results: []const CanonicalAbiType,
+};
+
+pub const WitInterface = struct {
+    name: []const u8,
+    functions: []const WitFunctionSignature,
+};
+
+pub const WitInterfaceError = error{
+    ImportCountMismatch,
+    ExportCountMismatch,
+    FunctionNotFound,
+    ArgumentCountMismatch,
+    ArgumentTypeMismatch,
 };
 
 pub const CanonicalAbiType = enum {
@@ -99,6 +122,40 @@ pub fn resolveWorld(pkg: WitPackage, name: []const u8) !WitWorld {
     return error.WorldNotFound;
 }
 
+/// Validates that a world's declared `imports`/`exports` interface lists
+/// (when populated) agree with its numeric `import_count`/`export_count`
+/// fields, catching a world definition where the interface list drifted
+/// out of sync with the summary counts.
+pub fn validateWorldInterfaceCounts(world: WitWorld) WitInterfaceError!void {
+    if (world.imports.len != 0 and world.imports.len != world.import_count) {
+        return error.ImportCountMismatch;
+    }
+    if (world.exports.len != 0 and world.exports.len != world.export_count) {
+        return error.ExportCountMismatch;
+    }
+}
+
+pub fn findFunction(interface: WitInterface, name: []const u8) ?WitFunctionSignature {
+    for (interface.functions) |f| {
+        if (std.mem.eql(u8, f.name, name)) return f;
+    }
+    return null;
+}
+
+/// Validates a prospective call's argument types against a WIT function
+/// signature's declared parameter types before the call crosses the
+/// canonical ABI boundary into the WASM instance.
+pub fn validateCallSignature(sig: WitFunctionSignature, arg_types: []const CanonicalAbiType) WitInterfaceError!void {
+    if (sig.params.len != arg_types.len) {
+        return error.ArgumentCountMismatch;
+    }
+    for (sig.params, arg_types) |expected, actual| {
+        if (expected != actual) {
+            return error.ArgumentTypeMismatch;
+        }
+    }
+}
+
 test "wit package fields" {
     const worlds = [_]WitWorld{.{ .name = "runtime", .import_count = 1, .export_count = 1 }};
     const pkg = try parse("wavium:runtime", worlds[0..]);
@@ -138,4 +195,32 @@ test "canonical abi string len-prefixed" {
 
     const decoded = try decodeStringLenPrefixed(buf[0..used]);
     try std.testing.expectEqualStrings("wavium", decoded);
+}
+
+test "validateWorldInterfaceCounts accepts empty interface lists and matching counts" {
+    const bare_world = WitWorld{ .name = "runtime", .import_count = 1, .export_count = 1 };
+    try validateWorldInterfaceCounts(bare_world);
+
+    const export_fns = [_]WitFunctionSignature{.{ .name = "run", .params = &.{.string}, .results = &.{.i32} }};
+    const exports = [_]WitInterface{.{ .name = "runtime-api", .functions = export_fns[0..] }};
+    const detailed_world = WitWorld{ .name = "runtime", .import_count = 0, .export_count = 1, .exports = exports[0..] };
+    try validateWorldInterfaceCounts(detailed_world);
+}
+
+test "validateWorldInterfaceCounts rejects drifted counts" {
+    const exports = [_]WitInterface{ .{ .name = "a", .functions = &.{} }, .{ .name = "b", .functions = &.{} } };
+    const world = WitWorld{ .name = "runtime", .import_count = 0, .export_count = 1, .exports = exports[0..] };
+    try std.testing.expectError(WitInterfaceError.ExportCountMismatch, validateWorldInterfaceCounts(world));
+}
+
+test "findFunction and validateCallSignature enforce parameter types" {
+    const functions = [_]WitFunctionSignature{.{ .name = "run", .params = &.{ .string, .i32 }, .results = &.{.bool} }};
+    const iface = WitInterface{ .name = "runtime-api", .functions = functions[0..] };
+
+    const sig = findFunction(iface, "run").?;
+    try validateCallSignature(sig, &.{ .string, .i32 });
+    try std.testing.expectError(WitInterfaceError.ArgumentCountMismatch, validateCallSignature(sig, &.{.string}));
+    try std.testing.expectError(WitInterfaceError.ArgumentTypeMismatch, validateCallSignature(sig, &.{ .i32, .string }));
+
+    try std.testing.expect(findFunction(iface, "missing") == null);
 }

@@ -94,6 +94,41 @@ pub fn verifyPackage(pkg: WvmPackage) !void {
     if (pkg.component_digest == 0) return error.InvalidComponentDigest;
 }
 
+pub const SignError = error{SigningFailed};
+
+/// Decoupling seam: wavium-build never depends on a concrete signing backend
+/// (e.g. wavium-security-tools). Callers bind a SignFn that turns a component
+/// digest into an opaque signature token.
+pub const SignFn = *const fn (component_digest: u64) SignError!u64;
+
+pub const PackageSigner = struct {
+    sign_fn: SignFn,
+
+    pub fn sign(self: PackageSigner, pkg: WvmPackage) !SignedPackage {
+        const token = try self.sign_fn(pkg.component_digest);
+        var signed_manifest = pkg.manifest;
+        signed_manifest.signature_present = true;
+        return .{
+            .manifest = signed_manifest,
+            .component_digest = pkg.component_digest,
+            .signature_token = token,
+        };
+    }
+};
+
+pub const SignedPackage = struct {
+    manifest: WvmManifest,
+    component_digest: u64,
+    signature_token: u64,
+};
+
+pub fn verifySignedPackage(signed: SignedPackage) !void {
+    try verifyManifest(signed.manifest);
+    if (!signed.manifest.signature_present) return error.MissingSignature;
+    if (signed.signature_token == 0) return error.InvalidSignatureToken;
+    if (signed.component_digest == 0) return error.InvalidComponentDigest;
+}
+
 pub fn writeManifest(manifest: WvmManifest, out: []u8) !usize {
     var pos: usize = 0;
 
@@ -357,4 +392,67 @@ test "manifest rejects unsupported schema version" {
         .signature_present = false,
     };
     try std.testing.expectError(error.UnsupportedSchemaVersion, verifyManifest(manifest));
+}
+
+fn fakeSign(component_digest: u64) SignError!u64 {
+    return component_digest ^ 0xA5A5_A5A5_A5A5_A5A5;
+}
+
+fn failingSign(component_digest: u64) SignError!u64 {
+    _ = component_digest;
+    return error.SigningFailed;
+}
+
+test "package signer produces a verifiable signed package" {
+    const artifact = try componentBuild(.{
+        .source_path = "src/signed.zig",
+        .component_name = "signed",
+        .wit_world = "runtime",
+        .target = .wasm32_component,
+    });
+    const manifest = WvmManifest{
+        .package_name = "signed.wvm",
+        .component_name = "signed",
+        .wit_world = "runtime",
+        .target = .wasm32_component,
+        .dependencies = &.{},
+        .capabilities = &.{},
+        .signature_present = false,
+    };
+    const pkg = try packageArtifact(artifact, manifest);
+
+    const signer = PackageSigner{ .sign_fn = fakeSign };
+    const signed = try signer.sign(pkg);
+
+    try std.testing.expect(signed.manifest.signature_present);
+    try std.testing.expectEqual(pkg.component_digest ^ 0xA5A5_A5A5_A5A5_A5A5, signed.signature_token);
+    try verifySignedPackage(signed);
+}
+
+test "verifySignedPackage rejects missing signature and propagates signer failure" {
+    const artifact = try componentBuild(.{
+        .source_path = "src/unsigned.zig",
+        .component_name = "unsigned",
+        .wit_world = "runtime",
+        .target = .wasm32_component,
+    });
+    const manifest = WvmManifest{
+        .package_name = "unsigned.wvm",
+        .component_name = "unsigned",
+        .wit_world = "runtime",
+        .target = .wasm32_component,
+        .dependencies = &.{},
+        .capabilities = &.{},
+        .signature_present = false,
+    };
+    const pkg = try packageArtifact(artifact, manifest);
+
+    try std.testing.expectError(error.MissingSignature, verifySignedPackage(.{
+        .manifest = pkg.manifest,
+        .component_digest = pkg.component_digest,
+        .signature_token = 42,
+    }));
+
+    const failing_signer = PackageSigner{ .sign_fn = failingSign };
+    try std.testing.expectError(error.SigningFailed, failing_signer.sign(pkg));
 }

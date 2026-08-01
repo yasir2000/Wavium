@@ -23,30 +23,72 @@ pub const ResourceHandle = struct {
     required_permission: Permission,
 };
 
+pub const CapabilityError = error{
+    PermissionEscalation,
+    ParentRevoked,
+    UnknownParent,
+};
+
+const IssuedTokenRecord = struct {
+    permissions: PermissionSet,
+    parent_token_id: ?u64,
+};
+
 pub const CapabilityManager = struct {
     allocator: std.mem.Allocator,
     next_token_id: u64,
     revoked_tokens: std.AutoHashMap(u64, void),
+    issued: std.AutoHashMap(u64, IssuedTokenRecord),
 
     pub fn init(allocator: std.mem.Allocator) CapabilityManager {
         return .{
             .allocator = allocator,
             .next_token_id = 1,
             .revoked_tokens = std.AutoHashMap(u64, void).init(allocator),
+            .issued = std.AutoHashMap(u64, IssuedTokenRecord).init(allocator),
         };
     }
 
     pub fn deinit(self: *CapabilityManager) void {
         self.revoked_tokens.deinit();
+        self.issued.deinit();
     }
 
-    pub fn issue(self: *CapabilityManager, subject_id: u64, permissions: PermissionSet) CapabilityToken {
+    pub fn issue(self: *CapabilityManager, subject_id: u64, permissions: PermissionSet) !CapabilityToken {
         const token = CapabilityToken{
             .token_id = self.next_token_id,
             .subject_id = subject_id,
             .permissions = permissions,
             .revoked = false,
         };
+        try self.issued.put(token.token_id, .{ .permissions = permissions, .parent_token_id = null });
+        self.next_token_id += 1;
+        return token;
+    }
+
+    /// Derives a narrower (never broader) capability from `parent`,
+    /// attributing it to `subject_id`. This is the attenuation operation
+    /// central to capability-based security (ADR-003): a subject can only
+    /// grant a subset of the permissions it already holds, and the derived
+    /// token remains tied to its parent's revocation status.
+    pub fn derive(self: *CapabilityManager, parent: CapabilityToken, subject_id: u64, permissions: PermissionSet) !CapabilityToken {
+        if (self.isRevoked(parent)) {
+            return error.ParentRevoked;
+        }
+        if (!self.issued.contains(parent.token_id)) {
+            return error.UnknownParent;
+        }
+        if (!parent.permissions.supersetOf(permissions)) {
+            return error.PermissionEscalation;
+        }
+
+        const token = CapabilityToken{
+            .token_id = self.next_token_id,
+            .subject_id = subject_id,
+            .permissions = permissions,
+            .revoked = false,
+        };
+        try self.issued.put(token.token_id, .{ .permissions = permissions, .parent_token_id = parent.token_id });
         self.next_token_id += 1;
         return token;
     }
@@ -56,9 +98,19 @@ pub const CapabilityManager = struct {
         try self.revoked_tokens.put(token.token_id, {});
     }
 
+    /// A token is revoked if it (or any ancestor it was derived from) has
+    /// been explicitly revoked. This gives revocation "cascade" semantics
+    /// without needing to enumerate and mutate every descendant eagerly.
     pub fn isRevoked(self: *CapabilityManager, token: CapabilityToken) bool {
         if (token.revoked) return true;
-        return self.revoked_tokens.contains(token.token_id);
+
+        var current_id: ?u64 = token.token_id;
+        while (current_id) |id| {
+            if (self.revoked_tokens.contains(id)) return true;
+            const record = self.issued.get(id) orelse return false;
+            current_id = record.parent_token_id;
+        }
+        return false;
     }
 };
 

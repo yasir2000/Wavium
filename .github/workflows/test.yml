@@ -5,6 +5,11 @@ on:
   pull_request:
 
 jobs:
+  boot-wrapper-preflight:
+    uses: ./.github/workflows/boot-wrapper-preflight.yml
+    with:
+      workflow_file: .github/workflows/test.yml
+
   test:
     runs-on: ubuntu-latest
     steps:

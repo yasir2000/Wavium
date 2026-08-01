@@ -34,3 +34,5 @@ See [supported platforms](supported-platforms.md) for target coverage.
 - [Hardware Architecture](../architecture/hardware-architecture.md)
 - [Hardware Abstraction](hardware-abstraction.md)
 - [Wavium Hardware Spec](../specifications/wavium-hardware-spec.md)
+- [Boot Sequence (Prompt 02)](boot-sequence-prompt02.md)
+- [Early Memory Map (Prompt 02)](memory-map-prompt02.md)

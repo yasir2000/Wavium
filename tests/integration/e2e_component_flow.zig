@@ -13,6 +13,31 @@ fn authorizeFromToken(ctx: *const anyopaque, permission: wasi.ResourcePermission
     };
 }
 
+var e2e_wasm_engine: wasm.WasmEngine = undefined;
+var e2e_wasm_module: wasm.WasmModule = undefined;
+var e2e_wasm_instance: wasm.Instance = undefined;
+
+/// Adapts `wavium-wasm`'s concrete engine to `wavium-component`'s
+/// backend-agnostic `ExecutionBackend` interface, proving the component
+/// runtime (Prompt 11) can drive a real WASM engine through opaque
+/// instantiate/invoke/destroy function pointers rather than the two
+/// modules calling into each other's concrete types directly.
+fn wasmInstantiate(_: component.LinkedComponent) component.RuntimeError!*anyopaque {
+    e2e_wasm_instance = e2e_wasm_engine.instantiate(e2e_wasm_module, .{}) catch return error.BackendInstantiateFailed;
+    return @ptrCast(&e2e_wasm_instance);
+}
+
+fn wasmInvoke(handle: *anyopaque, entry: []const u8, args: []const u8) component.RuntimeError!usize {
+    const inst: *wasm.Instance = @ptrCast(@alignCast(handle));
+    const result = e2e_wasm_engine.execute(inst, entry, args) catch return error.NotInstantiated;
+    return result.bytes_returned;
+}
+
+fn wasmDestroy(handle: *anyopaque) void {
+    const inst: *wasm.Instance = @ptrCast(@alignCast(handle));
+    e2e_wasm_engine.destroy(inst);
+}
+
 test "e2e wit->component->wasm execute" {
     const worlds = [_]wit.WitWorld{.{ .name = "runtime", .import_count = 1, .export_count = 1 }};
     const pkg = try wit.parse("wavium:runtime", worlds[0..]);
@@ -20,14 +45,17 @@ test "e2e wit->component->wasm execute" {
 
     var loader = component.ComponentLoader.init();
     const comp = try loader.loadComponent(.{ .name = "hello-component", .world = "runtime" });
-    _ = try loader.link(comp, .{ .name = world.name });
+    const linked = try loader.link(comp, .{ .name = world.name });
 
-    var engine = wasm.WasmEngine.init(.{});
+    e2e_wasm_engine = wasm.WasmEngine.init(.{});
     const bytes = [_]u8{ 0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00 };
-    const module = try engine.load(bytes[0..]);
-    var inst = try engine.instantiate(module, .{});
-    const exec = try engine.execute(&inst, "run", "hello");
-    try std.testing.expectEqual(@as(usize, 5), exec.bytes_returned);
+    e2e_wasm_module = try e2e_wasm_engine.load(bytes[0..]);
+
+    const backend = component.ExecutionBackend{ .instantiate = wasmInstantiate, .invoke = wasmInvoke, .destroy = wasmDestroy };
+    const runtime = component.ComponentRuntime.init(backend);
+    var running = try runtime.start(linked);
+    const bytes_returned = try running.invoke("run", "hello");
+    try std.testing.expectEqual(@as(usize, 5), bytes_returned);
 
     var wasi_ctx = wasi.WasiContext.init(7);
     try std.testing.expectEqualStrings("runtime", wasi_ctx.environmentGet("wavium.mode").?);
@@ -47,6 +75,6 @@ test "e2e wit->component->wasm execute" {
     const rw_token_ctx: *const anyopaque = @ptrCast(&read_write_token);
     try wasi_ctx.storageWrite("demo", "new-value", rw_token_ctx, authorizeFromToken);
 
-    engine.destroy(&inst);
-    try std.testing.expectError(error.InstanceNotAlive, engine.execute(&inst, "run", "hello"));
+    running.shutdown();
+    try std.testing.expectError(component.RuntimeError.NotInstantiated, running.invoke("run", "hello"));
 }

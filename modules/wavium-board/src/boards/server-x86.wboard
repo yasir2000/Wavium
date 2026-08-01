@@ -1,0 +1,8 @@
+name=server-x86
+arch=x86_64
+cores=64
+clock_mhz=3200
+memory_bytes=549755813888
+devices=nvme0,eth0,eth1
+drivers=nvme0:nvme-driver,eth0:e1000e-driver,eth1:e1000e-driver
+capabilities=storage.read,storage.write,network.send,network.receive

@@ -1,0 +1,8 @@
+name=raspberry-pi
+arch=aarch64
+cores=4
+clock_mhz=1500
+memory_bytes=4294967296
+devices=gpio,uart0,sdcard
+drivers=gpio:bcm2711-gpio-driver,uart0:pl011-driver,sdcard:sdhci-driver
+capabilities=gpio.access,storage.read,storage.write

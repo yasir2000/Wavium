@@ -1,0 +1,7 @@
+flowchart TD
+    Reset[Hardware Reset] --> Entry[Boot Entry _start]
+    Entry --> Cpu[CPU Initialization]
+    Cpu --> Mem[Memory Initialization]
+    Mem --> Discover[Hardware Discovery Handoff]
+    Discover --> Loader[Runtime Loader]
+    Loader --> Runtime[Wavium Runtime Entry]

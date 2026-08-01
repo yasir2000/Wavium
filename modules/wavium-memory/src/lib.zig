@@ -2,6 +2,10 @@ const std = @import("std");
 
 pub const Arena = @import("arena.zig").Arena;
 pub const Quota = @import("quota.zig").Quota;
+pub const FrameAllocator = @import("pmm.zig").FrameAllocator;
+pub const PhysicalMemoryRegion = @import("pmm.zig").PhysicalMemoryRegion;
+pub const FrameAllocError = @import("pmm.zig").FrameAllocError;
+pub const PAGE_SIZE = @import("pmm.zig").PAGE_SIZE;
 
 test "arena deterministic allocation" {
     var buf: [128]u8 = undefined;

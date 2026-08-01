@@ -1,0 +1,8 @@
+name=riscv-board
+arch=riscv64
+cores=8
+clock_mhz=1200
+memory_bytes=2147483648
+devices=uart0,plic0,clint0
+drivers=uart0:sifive-uart-driver,plic0:sifive-plic-driver,clint0:sifive-clint-driver
+capabilities=storage.read,event.publish

@@ -6,6 +6,7 @@ pub fn build(b: *std.Build) void {
 
     const module_paths = [_][]const u8{
         "modules/wavium-core/src/lib.zig",
+        "modules/wavium-arch/src/lib.zig",
         "modules/wavium-memory/src/lib.zig",
         "modules/wavium-scheduler/src/lib.zig",
         "modules/wavium-security/src/lib.zig",
@@ -33,6 +34,7 @@ pub fn build(b: *std.Build) void {
         "modules/wavium-devkit/src/lib.zig",
         "modules/wavium-sim/src/lib.zig",
         "modules/wavium-ci/src/lib.zig",
+        "modules/wavium-board/src/lib.zig",
     };
 
     inline for (module_paths) |p| {
@@ -66,6 +68,55 @@ pub fn build(b: *std.Build) void {
     });
     const run_cli_test = b.addRunArtifact(cli_test);
     test_step.dependOn(&run_cli_test.step);
+
+    // Top-level scaffold folders (Prompt 01 layout: actor/, arch/, hal/, ...)
+    // are thin re-export facades over the real modules/wavium-* implementations.
+    // Each facade needs a named import (not a relative file @import) since Zig
+    // does not allow @import to cross a module's root path boundary.
+    const FacadeSpec = struct {
+        facade_path: []const u8,
+        import_name: []const u8,
+        target_path: []const u8,
+    };
+
+    const facade_specs = [_]FacadeSpec{
+        .{ .facade_path = "actor/lib.zig", .import_name = "wavium-actor", .target_path = "modules/wavium-actor/src/lib.zig" },
+        .{ .facade_path = "arch/lib.zig", .import_name = "wavium-arch", .target_path = "modules/wavium-arch/src/lib.zig" },
+        .{ .facade_path = "build/lib.zig", .import_name = "wavium-build", .target_path = "modules/wavium-build/src/lib.zig" },
+        .{ .facade_path = "capability/lib.zig", .import_name = "wavium-security", .target_path = "modules/wavium-security/src/lib.zig" },
+        .{ .facade_path = "cli/lib.zig", .import_name = "wavium-cli", .target_path = "modules/wavium-cli/src/main.zig" },
+        .{ .facade_path = "component/lib.zig", .import_name = "wavium-component", .target_path = "modules/wavium-component/src/lib.zig" },
+        .{ .facade_path = "devices/lib.zig", .import_name = "wavium-hal", .target_path = "modules/wavium-hal/src/lib.zig" },
+        .{ .facade_path = "drivers/lib.zig", .import_name = "wavium-hal", .target_path = "modules/wavium-hal/src/lib.zig" },
+        .{ .facade_path = "filesystem/lib.zig", .import_name = "wavium-wasi", .target_path = "modules/wavium-wasi/src/lib.zig" },
+        .{ .facade_path = "hal/lib.zig", .import_name = "wavium-hal", .target_path = "modules/wavium-hal/src/lib.zig" },
+        .{ .facade_path = "memory/lib.zig", .import_name = "wavium-memory", .target_path = "modules/wavium-memory/src/lib.zig" },
+        .{ .facade_path = "network/lib.zig", .import_name = "wavium-fabric", .target_path = "modules/wavium-fabric/src/lib.zig" },
+        .{ .facade_path = "packages/lib.zig", .import_name = "wavium-build", .target_path = "modules/wavium-build/src/lib.zig" },
+        .{ .facade_path = "runtime/lib.zig", .import_name = "wavium-component", .target_path = "modules/wavium-component/src/lib.zig" },
+        .{ .facade_path = "scheduler/lib.zig", .import_name = "wavium-scheduler", .target_path = "modules/wavium-scheduler/src/lib.zig" },
+        .{ .facade_path = "sdk/lib.zig", .import_name = "wavium-sdk", .target_path = "modules/wavium-sdk/src/lib.zig" },
+        .{ .facade_path = "security/lib.zig", .import_name = "wavium-security", .target_path = "modules/wavium-security/src/lib.zig" },
+        .{ .facade_path = "storage/lib.zig", .import_name = "wavium-state", .target_path = "modules/wavium-state/src/lib.zig" },
+        .{ .facade_path = "wasm/lib.zig", .import_name = "wavium-wasm", .target_path = "modules/wavium-wasm/src/lib.zig" },
+        .{ .facade_path = "wit/lib.zig", .import_name = "wavium-wit", .target_path = "modules/wavium-wit/src/lib.zig" },
+    };
+
+    inline for (facade_specs) |spec| {
+        const facade_module = b.createModule(.{
+            .root_source_file = b.path(spec.facade_path),
+            .target = target,
+            .optimize = optimize,
+        });
+        facade_module.addImport(spec.import_name, b.createModule(.{
+            .root_source_file = b.path(spec.target_path),
+            .target = target,
+            .optimize = optimize,
+        }));
+        const facade_test = b.addTest(.{ .root_module = facade_module });
+        const run_facade_test = b.addRunArtifact(facade_test);
+        test_step.dependOn(&run_facade_test.step);
+    }
 
     const boundary_root = b.createModule(.{
         .root_source_file = b.path("tests/component/api_boundaries.zig"),

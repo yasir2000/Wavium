@@ -19,7 +19,7 @@ pub fn main() !void {
 
     const stdout = std.io.getStdOut().writer();
     const command = args.next() orelse {
-        try stdout.print("usage: wavium <create|build|package|run|inspect|debug|benchmark>\n", .{});
+        try stdout.print("usage: wavium <create|new|init|build|test|package|deploy|run|inspect|debug|benchmark>\n", .{});
         return;
     };
 
@@ -49,4 +49,25 @@ test "dispatch create dry-run command" {
 
 test "dispatch unknown command fails" {
     try std.testing.expectError(error.UnknownCommand, dispatch("invalid"));
+}
+
+test "dispatch new command" {
+    const out = try dispatch("new");
+    try std.testing.expect(std.mem.indexOf(u8, out, "wavium.new") != null);
+}
+
+test "dispatch deploy command" {
+    const out = try dispatch("deploy");
+    try std.testing.expect(std.mem.indexOf(u8, out, "wavium.deploy") != null);
+}
+
+test "dispatch init command" {
+    const out = try dispatch("init");
+    try std.testing.expect(std.mem.indexOf(u8, out, "wavium.init") != null);
+}
+
+test "dispatch test command" {
+    const out = try dispatch("test");
+    try std.testing.expect(std.mem.indexOf(u8, out, "wavium.test") != null);
+    try std.testing.expectEqualStrings("test", registry.commandName(.test_run));
 }

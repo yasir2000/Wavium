@@ -1,0 +1,60 @@
+name: boot-wrapper-preflight
+
+on:
+  workflow_call:
+    inputs:
+      workflow_file:
+        required: true
+        type: string
+
+jobs:
+  scope:
+    runs-on: ubuntu-latest
+    outputs:
+      run_preflight: ${{ steps.filter.outputs.boot_related }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect boot-related changes
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            boot_related:
+              - 'boot/**'
+              - 'scripts/**'
+              - '${{ inputs.workflow_file }}'
+
+  linux:
+    needs: scope
+    if: needs.scope.outputs.run_preflight == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Zig
+        uses: mlugg/setup-zig@v1
+        with:
+          version: master
+
+      - name: Run boot wrapper preflight (shell)
+        run: sh scripts/check-boot-verify-wrappers.sh
+
+  windows:
+    needs: scope
+    if: needs.scope.outputs.run_preflight == 'true'
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Zig
+        uses: mlugg/setup-zig@v1
+        with:
+          version: master
+
+      - name: Run boot wrapper preflight (PowerShell)
+        shell: powershell
+        run: .\scripts\check-boot-verify-wrappers.ps1

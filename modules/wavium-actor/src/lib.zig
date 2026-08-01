@@ -1,15 +1,13 @@
 const std = @import("std");
 
-pub const ActorStatus = enum {
-    inactive,
-    active,
-    suspended,
-};
+pub const ActorStatus = @import("actor_ref.zig").ActorStatus;
+pub const ActorRef = @import("actor_ref.zig").ActorRef;
 
-pub const ActorRef = struct {
-    id: u64,
-    status: ActorStatus,
-};
+pub const SupervisionStrategy = @import("supervision.zig").SupervisionStrategy;
+pub const SupervisionError = @import("supervision.zig").SupervisionError;
+pub const ChildSpec = @import("supervision.zig").ChildSpec;
+pub const Supervisor = @import("supervision.zig").Supervisor;
+pub const MAX_SUPERVISED_CHILDREN = @import("supervision.zig").MAX_SUPERVISED_CHILDREN;
 
 pub const Mailbox = struct {
     allocator: std.mem.Allocator,
